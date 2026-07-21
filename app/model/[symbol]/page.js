@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { deriveState, runAll } from "@/lib/engine";
 import { big, pc, px, curSym } from "@/lib/format";
 import ModelControls from "@/components/ModelControls";
+import Logo from "@/components/Logo";
 import Wizard from "@/components/Wizard";
 import { Overview, ThreeStatement, DcfPanel, ScenariosPanel, SensitivityPanel, CapPanel, MaPanel, LboPanel } from "@/components/Panels";
 
@@ -155,9 +156,13 @@ function Shell({ children }) {
     <>
       <header className="site-header">
         <div className="inner">
-          <Link href="/" className="logo">FORECAST<span>LY</span></Link>
+          <Link href="/" className="logo-wrap">
+            <Logo size={28} />
+            <span className="logo">FORECAST<span style={{ color: "var(--gold)" }}>LY</span></span>
+          </Link>
           <nav className="site-nav">
             <Link href="/">New model</Link>
+            <a href="https://github.com/faizan896/forecastly" target="_blank" rel="noreferrer">GitHub</a>
           </nav>
         </div>
       </header>

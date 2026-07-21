@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { px, pc } from "@/lib/format";
+import Logo from "@/components/Logo";
 
 const POPULAR = ["AAPL", "MSFT", "TSLA", "NVDA", "AMZN", "DPZ", "KO", "NKE"];
 
@@ -45,9 +46,12 @@ export default function Home() {
     <>
       <header className="site-header">
         <div className="inner">
-          <div className="logo">FORECAST<span>LY</span></div>
+          <div className="logo-wrap">
+            <Logo size={30} />
+            <div className="logo">FORECAST<span>LY</span></div>
+          </div>
           <nav className="site-nav">
-            <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://github.com/faizan896/forecastly" target="_blank" rel="noreferrer">GitHub</a>
           </nav>
         </div>
       </header>
@@ -84,6 +88,26 @@ export default function Home() {
           {POPULAR.map((s) => (
             <button key={s} onClick={() => open(s)}>{s}</button>
           ))}
+        </div>
+      </section>
+
+      <section className="purpose">
+        <div className="purpose-inner">
+          <div className="smallcaps" style={{ textAlign: "center" }}>How it works</div>
+          <div className="steps3">
+            <div className="step3"><div className="n">1</div><div><b>Pick a company</b><br />Search any listed company — its real financials load from SEC filings automatically.</div></div>
+            <div className="step3"><div className="n">2</div><div><b>Answer 4 questions</b><br />Growth, profitability, risk — each pre-filled with data-driven suggestions. No jargon.</div></div>
+            <div className="step3"><div className="n">3</div><div><b>Get the full model</b><br />A complete valuation with live charts — every number explained, every assumption yours to change.</div></div>
+          </div>
+          <div className="smallcaps" style={{ textAlign: "center", marginTop: 34 }}>What's inside every model</div>
+          <div className="feat-row">
+            {["3-Statement Model", "DCF Valuation", "Scenarios", "Sensitivity", "Capital Raising", "M&A", "LBO"].map((f) => (
+              <span key={f} className="feat">{f}</span>
+            ))}
+          </div>
+          <p className="purpose-note">
+            The same frameworks investment banks use — rebuilt for learning. Free, in your browser, no Excel required.
+          </p>
         </div>
       </section>
 

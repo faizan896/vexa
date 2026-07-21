@@ -1,9 +1,23 @@
 import "./globals.css";
 
 export const metadata = {
+  metadataBase: new URL("https://forecastly-fazis-projects-f96b2d55.vercel.app"),
   title: "Forecastly — Financial modeling for everyone",
   description:
     "Build a full financial model of any listed company in minutes — 3-statement forecast, DCF, scenarios, sensitivity, capital raising, M&A and LBO. No Excel required.",
+  openGraph: {
+    title: "Forecastly — Financial modeling for everyone",
+    description:
+      "Type any listed company. Get a full banker-grade model in minutes — DCF, scenarios, M&A, LBO. No Excel required.",
+    type: "website",
+    siteName: "Forecastly",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Forecastly — Financial modeling for everyone",
+    description:
+      "Type any listed company. Get a full banker-grade model in minutes — DCF, scenarios, M&A, LBO. No Excel required.",
+  },
 };
 
 export default function RootLayout({ children }) {

@@ -16,6 +16,18 @@ export default function Wizard({ state, setAsm, onDone, suggested }) {
 
   const steps = [
     {
+      tag: "Welcome",
+      title: `We just pulled ${state.hist.name}'s real financials`,
+      exp: `Revenue, profits, balance sheet, cash flow — the last three fiscal years, straight from official filings. Now answer 4 quick questions about the future (each comes pre-filled with a data-driven suggestion) and Forecastly will build the complete model: valuation, scenarios, deal analyses, everything.`,
+      body: (
+        <div className="suggest" style={{ lineHeight: 1.7 }}>
+          Latest fiscal year revenue: <b>{Math.round(state.hist.rev[state.hist.rev.length - 1]).toLocaleString()}M {state.hist.currency}</b>
+          <br />Nothing to memorize — you can change every assumption later, and the yellow 📘 notes explain each concept as you go. Confused? Just hit Skip.
+        </div>
+      ),
+      apply: () => {},
+    },
+    {
       tag: "Step 1 of 4 — Growth",
       title: "How fast will revenue grow?",
       exp: `Over the last 3 fiscal years, ${state.hist.name} grew revenue about ${pc(suggested.cagr)} per year. Your Base case is pre-set near that — drag to override if you believe the future looks different.`,
@@ -114,7 +126,7 @@ export default function Wizard({ state, setAsm, onDone, suggested }) {
               else onDone();
             }}
           >
-            {step < steps.length - 1 ? "Next" : "Build my model →"}
+            {step === 0 ? "Let's go →" : step < steps.length - 1 ? "Next" : "Build my model →"}
           </button>
         </div>
         <div className="row">

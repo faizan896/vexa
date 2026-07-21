@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { px, pc } from "@/lib/format";
 import Logo from "@/components/Logo";
 
-const POPULAR = ["AAPL", "MSFT", "TSLA", "NVDA", "AMZN", "DPZ", "KO", "NKE"];
+const POPULAR = ["AAPL", "MSFT", "TSLA", "NVDA", "AMZN", "GOOGL", "META", "KO"];
 
 export default function Home() {
   const router = useRouter();

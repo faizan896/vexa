@@ -18,7 +18,7 @@ export default function Wizard({ state, setAsm, onDone, suggested }) {
     {
       tag: "Welcome",
       title: `We just pulled ${state.hist.name}'s real financials`,
-      exp: `Revenue, profits, balance sheet, cash flow — the last three fiscal years, straight from official filings. Now answer 4 quick questions about the future (each comes pre-filled with a data-driven suggestion) and Forecastly will build the complete model: valuation, scenarios, deal analyses, everything.`,
+      exp: `Revenue, profits, balance sheet, cash flow — the last three fiscal years, straight from official filings. Now answer 4 quick questions about the future (each comes pre-filled with a data-driven suggestion) and Vexa will build the complete model: valuation, scenarios, deal analyses, everything.`,
       body: (
         <div className="suggest" style={{ lineHeight: 1.7 }}>
           Latest fiscal year revenue: <b>{Math.round(state.hist.rev[state.hist.rev.length - 1]).toLocaleString()}M {state.hist.currency}</b>

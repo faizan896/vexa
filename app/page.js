@@ -15,7 +15,7 @@ export default function Home() {
 
   useEffect(() => {
     try {
-      setSaved(JSON.parse(localStorage.getItem("forecastly_models") || "[]"));
+      setSaved(JSON.parse(localStorage.getItem("vexa_models") || "[]"));
     } catch {}
   }, []);
 
@@ -39,7 +39,7 @@ export default function Home() {
     e.stopPropagation();
     const next = saved.filter((m) => m.symbol !== sym);
     setSaved(next);
-    localStorage.setItem("forecastly_models", JSON.stringify(next));
+    localStorage.setItem("vexa_models", JSON.stringify(next));
   };
 
   return (
@@ -48,10 +48,10 @@ export default function Home() {
         <div className="inner">
           <div className="logo-wrap">
             <Logo size={30} />
-            <div className="logo">FORECAST<span>LY</span></div>
+            <div className="logo">VE<span>XA</span></div>
           </div>
           <nav className="site-nav">
-            <a href="https://github.com/faizan896/forecastly" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://github.com/faizan896/vexa" target="_blank" rel="noreferrer">GitHub</a>
           </nav>
         </div>
       </header>
@@ -59,7 +59,7 @@ export default function Home() {
       <section className="home-hero">
         <h1 className="serif">What are we modeling today?</h1>
         <p className="tag">
-          Type any listed company. Forecastly pulls its real financials and walks you through a full
+          Type any listed company. Vexa pulls its real financials and walks you through a full
           model — DCF, scenarios, M&amp;A, LBO and more. No Excel required.
         </p>
         <div className="searchbox">
@@ -132,7 +132,7 @@ export default function Home() {
       </section>
 
       <div className="footer">
-        Forecastly · educational tool, not investment advice · market data by Financial Modeling Prep
+        Vexa · educational tool, not investment advice · market data by Financial Modeling Prep
       </div>
     </>
   );

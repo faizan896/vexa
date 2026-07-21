@@ -32,7 +32,7 @@ export default function ModelPage() {
         const st = deriveState(j);
         // restore saved assumptions if any
         try {
-          const saved = JSON.parse(localStorage.getItem("forecastly_models") || "[]").find((m) => m.symbol === sym);
+          const saved = JSON.parse(localStorage.getItem("vexa_models") || "[]").find((m) => m.symbol === sym);
           if (saved?.asm) { st.asm = { ...st.asm, ...saved.asm }; setScen(saved.scenIdx || 0); }
           else setWizard(true);
         } catch { setWizard(true); }
@@ -52,12 +52,12 @@ export default function ModelPage() {
     if (!state || !R) return;
     const t = setTimeout(() => {
       try {
-        const list = JSON.parse(localStorage.getItem("forecastly_models") || "[]").filter((m) => m.symbol !== sym);
+        const list = JSON.parse(localStorage.getItem("vexa_models") || "[]").filter((m) => m.symbol !== sym);
         list.unshift({
           symbol: sym, name: state.hist.name, savedAt: Date.now(), asm: state.asm, scenIdx: scen,
           scenario: ["Base", "Bull", "Bear"][scen], perShare: R.base.dcf.perShare, upside: R.base.dcf.upside, cur,
         });
-        localStorage.setItem("forecastly_models", JSON.stringify(list.slice(0, 24)));
+        localStorage.setItem("vexa_models", JSON.stringify(list.slice(0, 24)));
       } catch {}
     }, 800);
     return () => clearTimeout(t);
@@ -158,11 +158,11 @@ function Shell({ children }) {
         <div className="inner">
           <Link href="/" className="logo-wrap">
             <Logo size={28} />
-            <span className="logo">FORECAST<span style={{ color: "var(--gold)" }}>LY</span></span>
+            <span className="logo">VE<span style={{ color: "var(--gold)" }}>XA</span></span>
           </Link>
           <nav className="site-nav">
             <Link href="/">New model</Link>
-            <a href="https://github.com/faizan896/forecastly" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://github.com/faizan896/vexa" target="_blank" rel="noreferrer">GitHub</a>
           </nav>
         </div>
       </header>

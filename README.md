@@ -1,10 +1,10 @@
-# Forecastly
+# Vexa
 
-**Financial modeling for everyone.** Type any listed company — Forecastly pulls its real financials and walks you through a full, banker-grade model in minutes. No Excel required.
+**Financial modeling for everyone.** Type any listed company — Vexa pulls its real financials and walks you through a full, banker-grade model in minutes. No Excel required.
 
 ## What it does
 
-Search a ticker (AAPL, TSLA, DPZ, KO…) and Forecastly builds, live in the browser:
+Search a ticker (AAPL, TSLA, DPZ, KO…) and Vexa builds, live in the browser:
 
 - **3-Statement Model** — linked income statement, balance sheet and cash flow, 5-year forecast, with a balance check that ties to zero
 - **DCF Valuation** — unlevered FCF, CAPM-based WACC build, Gordon-growth terminal value with exit-multiple cross-check

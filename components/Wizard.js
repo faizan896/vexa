@@ -17,12 +17,12 @@ export default function Wizard({ state, setAsm, onDone, suggested }) {
   const steps = [
     {
       tag: "Welcome",
-      title: `We just pulled ${state.hist.name}'s real financials`,
-      exp: `Revenue, profits, balance sheet, cash flow — the last three fiscal years, straight from official filings. Now answer 4 quick questions about the future (each comes pre-filled with a data-driven suggestion) and Vexa will build the complete model: valuation, scenarios, deal analyses, everything.`,
+      title: `${state.hist.name}'s financials are loaded`,
+      exp: `That's three years of revenue, profits, balance sheet and cash flow, straight from the company's filings. Next you'll answer four short questions about how you think the business will do. Each already has an answer filled in, so you can just tweak what you disagree with.`,
       body: (
         <div className="suggest" style={{ lineHeight: 1.7 }}>
-          Latest fiscal year revenue: <b>{Math.round(state.hist.rev[state.hist.rev.length - 1]).toLocaleString()}M {state.hist.currency}</b>
-          <br />Nothing to memorize — you can change every assumption later, and the yellow 📘 notes explain each concept as you go. Confused? Just hit Skip.
+          Last year's revenue: <b>{Math.round(state.hist.rev[state.hist.rev.length - 1]).toLocaleString()}M {state.hist.currency}</b>
+          <br />You can change anything later, and there are notes along the way if a term is new. Not sure? Just hit Skip and use the defaults.
         </div>
       ),
       apply: () => {},
@@ -30,7 +30,7 @@ export default function Wizard({ state, setAsm, onDone, suggested }) {
     {
       tag: "Step 1 of 4 — Growth",
       title: "How fast will revenue grow?",
-      exp: `Over the last 3 fiscal years, ${state.hist.name} grew revenue about ${pc(suggested.cagr)} per year. Your Base case is pre-set near that — drag to override if you believe the future looks different.`,
+      exp: `${state.hist.name} grew revenue about ${pc(suggested.cagr)} a year over the last three years. That's the starting point — drag the slider if you think the next five will look different.`,
       body: (
         <>
           <div className="sliderline">

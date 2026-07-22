@@ -4,11 +4,11 @@ export const metadata = {
   metadataBase: new URL("https://vexa-fazis-projects-f96b2d55.vercel.app"),
   title: "Vexa — Financial modeling for everyone",
   description:
-    "Build a full financial model of any listed company in minutes — 3-statement forecast, DCF, scenarios, sensitivity, capital raising, M&A and LBO. No Excel required.",
+    "A free tool for learning financial modeling. Type any company and build a full valuation — 3-statement model, DCF, scenarios, sensitivity, capital raising, M&A and LBO — with each step explained.",
   openGraph: {
     title: "Vexa — Financial modeling for everyone",
     description:
-      "Type any listed company. Get a full banker-grade model in minutes — DCF, scenarios, M&A, LBO. No Excel required.",
+      "Type any company and build a full valuation in minutes — DCF, scenarios, M&A, LBO. Free, and it explains each step.",
     type: "website",
     siteName: "Vexa",
   },
@@ -16,7 +16,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Vexa — Financial modeling for everyone",
     description:
-      "Type any listed company. Get a full banker-grade model in minutes — DCF, scenarios, M&A, LBO. No Excel required.",
+      "Type any company and build a full valuation in minutes — DCF, scenarios, M&A, LBO. Free, and it explains each step.",
   },
 };
 

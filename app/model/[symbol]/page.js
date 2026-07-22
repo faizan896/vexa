@@ -7,6 +7,8 @@ import { big, pc, px, curSym } from "@/lib/format";
 import ModelControls from "@/components/ModelControls";
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
+import { AnimatedNumber } from "@/components/Motion";
+import Term from "@/components/Term";
 import Wizard from "@/components/Wizard";
 import { Overview, ThreeStatement, DcfPanel, ScenariosPanel, SensitivityPanel, CapPanel, MaPanel, LboPanel } from "@/components/Panels";
 
@@ -106,9 +108,19 @@ export default function ModelPage() {
   if (!state || !R)
     return (
       <Shell>
-        <div className="loading-wrap">
-          <div className="spinner" />
-          <div>Pulling {sym}'s real financials & building your model…</div>
+        <section className="hero"><div className="inner">
+          {[0, 1, 2].map((i) => (
+            <div className="kpi" key={i}>
+              <div className="skel skel-sm" />
+              <div className="skel skel-lg" />
+              <div className="skel skel-sm" />
+            </div>
+          ))}
+        </div></section>
+        <div className="sheet">
+          <div className="skel-note">Pulling {sym}'s real financials & building your model…</div>
+          <div className="card"><div className="skel skel-row" /><div className="skel skel-row" /><div className="skel skel-row" style={{ width: "70%" }} /></div>
+          <div className="card"><div className="skel skel-row" /><div className="skel skel-row" style={{ width: "85%" }} /><div className="skel skel-row" style={{ width: "60%" }} /></div>
         </div>
       </Shell>
     );
@@ -134,18 +146,18 @@ export default function ModelPage() {
           <div className="inner">
             <div className="kpi">
               <div className="smallcaps">{h.name} · intrinsic value</div>
-              <div className="val">{px(d.perShare, cur)}</div>
+              <div className="val"><AnimatedNumber value={d.perShare} format={(x) => px(x, cur)} /></div>
               <div className="sub">per share · {["Base", "Bull", "Bear"][scen]} case DCF</div>
             </div>
             <div className="kpi">
               <div className="smallcaps">vs. market price {px(h.price, cur)}</div>
-              <div className="val" style={{ color: d.upside >= 0 ? "#a8d5b5" : "#e8a79b" }}>{pc(d.upside)}</div>
+              <div className="val" style={{ color: d.upside >= 0 ? "#a8d5b5" : "#e8a79b" }}><AnimatedNumber value={d.upside} format={(x) => pc(x)} /></div>
               <div className="sub">{d.upside >= 0 ? "model says undervalued" : "model says overvalued"}</div>
             </div>
             <div className="kpi">
               <div className="smallcaps">Enterprise value</div>
-              <div className="val">{cur}{big(d.ev)}</div>
-              <div className="sub">WACC {pc(d.wacc, 2)} · TV {pc(d.tvPct, 0)} of value</div>
+              <div className="val">{cur}<AnimatedNumber value={d.ev} format={(x) => big(x)} /></div>
+              <div className="sub"><Term term="WACC" /> {pc(d.wacc, 2)} · TV {pc(d.tvPct, 0)} of value</div>
             </div>
           </div>
         </section>

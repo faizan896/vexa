@@ -18,8 +18,15 @@ export function Overview({ state, R, cur }) {
     { name: "Scenarios Bear→Bull", lo: Math.min(br, bl), hi: Math.max(br, bl) },
     { name: "Sensitivity (WACC ±0.5%)", lo: sensRange(R.sensTg, -1), hi: sensRange(R.sensTg, 1) },
   ].filter(Boolean);
+  const gap = Math.abs(d.upside);
+  const dir = d.upside >= 0 ? "below" : "above";
+  const takeaway =
+    gap < 0.1
+      ? `On the Base case, ${h.name} is trading roughly in line with what this model works out — about ${pc(Math.abs(d.upside), 0)} ${dir} fair value.`
+      : `On the Base case, ${h.name}'s price sits about ${pc(gap, 0)} ${dir} what this model works out. Whether that's a bargain, a warning, or the market seeing something the last three years don't, is the interesting part.`;
   return (
     <>
+      <div className="takeaway">{takeaway}</div>
       {d.upside < -0.4 && (
         <div className="learn" style={{ borderLeftColor: "#b3372b", background: "#fbf1ef" }}>
           🔭 <b>Story-stock alert:</b> the market is paying far more than this company's last three years justify.

@@ -213,6 +213,19 @@ table.fin tr.section td { font-size: 10.5px; letter-spacing: 0.12em; text-transf
 @media (max-width: 760px) { .lp-who { grid-template-columns: 1fr; } }
 .lp-feat-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 
+.takeaway { font-size: 16px; line-height: 1.55; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--brown); border-radius: 4px; padding: 14px 18px; }
+
+.lp-example { margin-top: 20px; background: none; border: none; color: #cbbfae; font: inherit; font-size: 13.5px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.lp-example:hover { color: #fff; }
+
+.lp-narrow { max-width: 680px; }
+.lp-story { font-size: 16px; line-height: 1.7; color: #443b34; text-align: center; margin-top: 10px; }
+.lp-faq { margin-top: 18px; display: grid; gap: 2px; }
+.lp-qa { border-top: 1px solid var(--line); padding: 16px 2px; }
+.lp-qa:last-child { border-bottom: 1px solid var(--line); }
+.lp-qa .q { font-weight: 600; font-size: 14.5px; margin-bottom: 5px; }
+.lp-qa .a { color: var(--grey); font-size: 13.5px; line-height: 1.55; }
+
 .lp-footer { background: var(--brown); color: #cbbfae; padding: 40px 24px; }
 .lp-footer-inner { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
 .lp-footer .logo { color: #f5efe6; }

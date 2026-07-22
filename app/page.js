@@ -97,6 +97,9 @@ export default function Home() {
               <button key={s} onClick={() => open(s)}>{s}</button>
             ))}
           </div>
+          <button className="lp-example" onClick={() => open("AAPL")}>
+            or see a finished model for Apple →
+          </button>
         </div>
       </section>
 
@@ -213,6 +216,40 @@ export default function Home() {
             {["3-Statement", "DCF", "Scenarios", "Sensitivity", "Capital Raising", "M&A", "LBO"].map((f) => (
               <span key={f} className="feat">{f}</span>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------- STORY + FAQ ---------------- */}
+      <section className="lp-band">
+        <div className="lp-band-inner lp-narrow">
+          <div className="smallcaps center">The story</div>
+          <p className="lp-story">
+            I wanted to learn how investors actually value a company, and everything I found was either
+            a course that cost hundreds of dollars or a blank Excel file I had no idea how to fill in.
+            So I spent a while figuring it out, and then built the thing I wish I'd had at the start —
+            somewhere you can pick a real company and watch a real valuation come together, one step at a time.
+            It's free. If it helps even a few people get unstuck, that's enough.
+          </p>
+
+          <div className="smallcaps center" style={{ marginTop: 40 }}>Common questions</div>
+          <div className="lp-faq">
+            <div className="lp-qa">
+              <div className="q">Which companies work?</div>
+              <div className="a">Most large US-listed companies — Apple, Microsoft, Tesla, Coca-Cola and so on. Some smaller or non-US names aren't covered yet; if one doesn't load, try its US ticker.</div>
+            </div>
+            <div className="lp-qa">
+              <div className="q">Where do the numbers come from?</div>
+              <div className="a">Straight from each company's official financial filings, through the Financial Modeling Prep data service. Nothing here is made up.</div>
+            </div>
+            <div className="lp-qa">
+              <div className="q">Should I trade on this?</div>
+              <div className="a">No. Vexa is for learning how valuation works. A model is only as good as its assumptions, and every stock deserves real research before you risk money.</div>
+            </div>
+            <div className="lp-qa">
+              <div className="q">Is it really free? Do I need an account?</div>
+              <div className="a">Yes, and no. Nothing to sign up for. Your models are saved in your own browser, not on a server.</div>
+            </div>
           </div>
         </div>
       </section>

@@ -82,13 +82,19 @@ export default function Home() {
         </div>
 
         <div className="cine-inner">
-          <div className="lp-eyebrow">FINANCIAL MODELING · FOR EVERYONE</div>
-          <h1 className="serif cine-h1">What is any company<br />really worth?</h1>
-          <p className="cine-sub">
+          <div className="lp-eyebrow hin" style={{ animationDelay: "0.05s" }}>FINANCIAL MODELING · FOR EVERYONE</div>
+          <h1 className="serif cine-h1">
+            {["What", "is", "any", "company", "\n", "really", "worth?"].map((w, i) =>
+              w === "\n" ? <br key={i} /> : (
+                <span className="hw" key={i} style={{ animationDelay: `${0.18 + i * 0.07}s` }}>{w}</span>
+              )
+            )}
+          </h1>
+          <p className="cine-sub hin" style={{ animationDelay: "0.72s" }}>
             Type a ticker and Vexa loads the company's real financials, then helps you build
             a full valuation — DCF, scenarios, M&amp;A, LBO. It's free, and it explains each step.
           </p>
-          <div className="searchbox lp-search">
+          <div className="searchbox lp-search hin" style={{ animationDelay: "0.86s" }}>
             <input
               placeholder="Search a company or ticker — Apple, TSLA, Coca-Cola…"
               value={q}
@@ -108,13 +114,13 @@ export default function Home() {
               </div>
             )}
           </div>
-          <div className="chips">
+          <div className="chips hin" style={{ animationDelay: "0.96s" }}>
             <span className="chips-label">Try:</span>
             {POPULAR.map((s) => (
               <button key={s} onClick={() => open(s)}>{s}</button>
             ))}
           </div>
-          <button className="lp-example" onClick={() => open("AAPL")}>
+          <button className="lp-example hin" style={{ animationDelay: "1.04s" }} onClick={() => open("AAPL")}>
             or see a finished model for Apple →
           </button>
         </div>

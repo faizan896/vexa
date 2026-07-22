@@ -238,11 +238,11 @@ table.fin tr.section td { font-size: 10.5px; letter-spacing: 0.12em; text-transf
 
 /* ================= CINEMATIC HERO ================= */
 .hero-photo { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
-.hero-photo-img { position: absolute; inset: 0; background: url(/hero.jpg) center 22% / cover no-repeat; transform: scale(1.04); animation: heroDrift 26s ease-in-out infinite alternate; }
-@keyframes heroDrift { from { transform: scale(1.04) translateY(0); } to { transform: scale(1.1) translateY(-2%); } }
+.hero-photo-img { position: absolute; inset: 0; background: url(/hero.jpg) center 22% / cover no-repeat; transform: scale(1.02); animation: heroIn 1.4s cubic-bezier(.2,.7,.2,1) both; will-change: transform, opacity; }
+@keyframes heroIn { from { transform: scale(1.08); opacity: 0.4; } to { transform: scale(1.02); opacity: 1; } }
 .hero-photo-veil { position: absolute; inset: 0; background:
-  radial-gradient(120% 75% at 50% 8%, rgba(58,38,25,0.10), transparent 55%),
-  linear-gradient(180deg, rgba(26,16,10,0.60) 0%, rgba(26,16,10,0.42) 42%, rgba(22,13,8,0.92) 100%); }
+  radial-gradient(120% 75% at 50% 8%, rgba(58,38,25,0.08), transparent 55%),
+  linear-gradient(180deg, rgba(24,15,9,0.52) 0%, rgba(24,15,9,0.38) 42%, rgba(20,12,7,0.9) 100%); }
 .hero-photo-grain { position: absolute; inset: 0; opacity: 0.05; mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E"); }
 @media (prefers-reduced-motion: reduce) { .hero-photo-img { animation: none; transform: scale(1.04); } }
@@ -262,6 +262,10 @@ table.fin tr.section td { font-size: 10.5px; letter-spacing: 0.12em; text-transf
 .cine-inner { margin: auto; text-align: center; max-width: 760px; padding: 0 24px; z-index: 2; }
 .cine-inner .lp-eyebrow { color: #e6c48f; }
 .cine-h1 { font-family: var(--serif); font-size: 66px; line-height: 1.0; font-weight: 600; letter-spacing: -0.015em; color: #f7eddd; text-shadow: 0 2px 40px rgba(18,10,5,0.55); }
+.cine-h1 .hw { display: inline-block; margin-right: 0.22em; opacity: 0; transform: translateY(30px); animation: heroUp 0.75s cubic-bezier(.2,.75,.2,1) forwards; }
+.hin { opacity: 0; transform: translateY(16px); animation: heroUp 0.75s cubic-bezier(.2,.75,.2,1) forwards; }
+@keyframes heroUp { to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .cine-h1 .hw, .hin { opacity: 1; transform: none; animation: none; } }
 .cine-sub { color: #e7d7c0; font-size: 16.5px; line-height: 1.6; max-width: 600px; margin: 20px auto 30px; text-shadow: 0 1px 16px rgba(20,12,6,0.4); }
 .cine-inner .searchbox input { box-shadow: 0 12px 40px rgba(10,6,3,0.45); }
 .cine-inner .chips { margin-top: 20px; }

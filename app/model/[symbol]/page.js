@@ -6,10 +6,22 @@ import { deriveState, runAll } from "@/lib/engine";
 import { big, pc, px, curSym } from "@/lib/format";
 import ModelControls from "@/components/ModelControls";
 import Logo from "@/components/Logo";
+import ThemeToggle from "@/components/ThemeToggle";
 import Wizard from "@/components/Wizard";
 import { Overview, ThreeStatement, DcfPanel, ScenariosPanel, SensitivityPanel, CapPanel, MaPanel, LboPanel } from "@/components/Panels";
 
 const TABS = ["Overview", "3-Statement", "DCF", "Scenarios", "Sensitivity", "Capital Raising", "M&A", "LBO"];
+
+function encodeShare(asm, scen) {
+  const keep = { g: asm.growth, gm: asm.gm, sg: asm.sgaPct, b: asm.beta, tg: asm.tg, xm: asm.exitMult, pr: asm.prem, ps: asm.pctStock, le: asm.lboEntry, ll: asm.lboLev, ra: asm.raiseAmt, sc: scen };
+  try { return btoa(JSON.stringify(keep)); } catch { return ""; }
+}
+function decodeShare() {
+  if (typeof window === "undefined") return null;
+  const m = window.location.hash.match(/v=([^&]+)/);
+  if (!m) return null;
+  try { return JSON.parse(atob(decodeURIComponent(m[1]))); } catch { return null; }
+}
 
 export default function ModelPage() {
   const { symbol } = useParams();
@@ -20,6 +32,14 @@ export default function ModelPage() {
   const [tab, setTab] = useState("Overview");
   const [wizard, setWizard] = useState(false);
   const [learnOn, setLearnOn] = useState(true);
+  const [copied, setCopied] = useState(false);
+
+  const share = async () => {
+    if (!state) return;
+    const url = `${window.location.origin}/model/${encodeURIComponent(sym)}#v=${encodeURIComponent(encodeShare(state.asm, scen))}`;
+    try { await navigator.clipboard.writeText(url); } catch {}
+    setCopied(true); setTimeout(() => setCopied(false), 2200);
+  };
 
   useEffect(() => {
     let dead = false;
@@ -30,12 +50,22 @@ export default function ModelPage() {
         if (dead) return;
         if (!r.ok) return setError(j.error || "Could not load data.");
         const st = deriveState(j);
-        // restore saved assumptions if any
-        try {
-          const saved = JSON.parse(localStorage.getItem("vexa_models") || "[]").find((m) => m.symbol === sym);
-          if (saved?.asm) { st.asm = { ...st.asm, ...saved.asm }; setScen(saved.scenIdx || 0); }
-          else setWizard(true);
-        } catch { setWizard(true); }
+        // 1) shared link takes priority, 2) then saved, 3) else wizard
+        const shared = decodeShare();
+        if (shared) {
+          const a = st.asm, s = shared;
+          if (s.g) a.growth = s.g; if (s.gm) a.gm = s.gm; if (s.sg) a.sgaPct = s.sg;
+          if (s.b != null) a.beta = s.b; if (s.tg != null) a.tg = s.tg; if (s.xm != null) a.exitMult = s.xm;
+          if (s.pr != null) a.prem = s.pr; if (s.ps != null) a.pctStock = s.ps;
+          if (s.le != null) a.lboEntry = s.le; if (s.ll != null) a.lboLev = s.ll; if (s.ra != null) a.raiseAmt = s.ra;
+          setScen(s.sc || 0);
+        } else {
+          try {
+            const saved = JSON.parse(localStorage.getItem("vexa_models") || "[]").find((m) => m.symbol === sym);
+            if (saved?.asm) { st.asm = { ...st.asm, ...saved.asm }; setScen(saved.scenIdx || 0); }
+            else setWizard(true);
+          } catch { setWizard(true); }
+        }
         setState(st);
       } catch {
         if (!dead) setError("Network problem — try again.");
@@ -124,7 +154,8 @@ export default function ModelPage() {
             {TABS.map((t) => (
               <button key={t} className={tab === t ? "on" : ""} onClick={() => setTab(t)}>{t}</button>
             ))}
-            <button style={{ marginLeft: "auto" }} onClick={() => setWizard(true)}>↻ Wizard</button>
+            <button style={{ marginLeft: "auto" }} onClick={share}>{copied ? "✓ Link copied" : "↗ Share"}</button>
+            <button onClick={() => setWizard(true)}>↻ Wizard</button>
           </div>
           <div className="two-col">
             <div style={{ display: "grid", gap: 20 }}>
@@ -162,6 +193,9 @@ function Shell({ children }) {
           </Link>
           <nav className="site-nav">
             <Link href="/">New model</Link>
+            <Link href="/compare">Compare</Link>
+            <ThemeToggle />
+            <button onClick={() => window.print()}>Export PDF</button>
             <a href="https://github.com/faizan896/vexa" target="_blank" rel="noreferrer">GitHub</a>
           </nav>
         </div>

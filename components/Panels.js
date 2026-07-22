@@ -1,6 +1,7 @@
 "use client";
 import { Card, Learn } from "./ui";
-import { fm, f0, pc, px, mx } from "@/lib/format";
+import Term from "./Term";
+import { fm, f0, pc, px, mx, big } from "@/lib/format";
 import {
   RevFcfChart, FootballField, Waterfall, Tornado, ScenarioPaths, DebtPaydown, PremiumBars,
 } from "./Charts";
@@ -24,9 +25,43 @@ export function Overview({ state, R, cur }) {
     gap < 0.1
       ? `On the Base case, ${h.name} is trading roughly in line with what this model works out — about ${pc(Math.abs(d.upside), 0)} ${dir} fair value.`
       : `On the Base case, ${h.name}'s price sits about ${pc(gap, 0)} ${dir} what this model works out. Whether that's a bargain, a warning, or the market seeing something the last three years don't, is the interesting part.`;
+  const co = state.co || {};
+  const rev = R.reverse;
   return (
     <>
+      {(co.description || co.sector) && (
+        <Card title={h.name} right={`${h.symbol}${co.exchange ? " · " + co.exchange : ""}`}>
+          <div className="co-stats">
+            {co.sector && <div><span className="smallcaps">Sector</span>{co.sector}</div>}
+            {co.industry && <div><span className="smallcaps">Industry</span>{co.industry}</div>}
+            {co.marketCap > 0 && <div><span className="smallcaps">Market cap</span>{cur}{big(co.marketCap)}</div>}
+            <div><span className="smallcaps">Price</span>{px(h.price, cur)}</div>
+            {co.range && <div><span className="smallcaps">52-wk range</span>{co.range.replace("-", " – ")}</div>}
+            {co.employees && <div><span className="smallcaps">Employees</span>{Number(co.employees).toLocaleString()}</div>}
+          </div>
+          {co.description && <p className="co-desc">{co.description.length > 420 ? co.description.slice(0, 420).trim() + "…" : co.description}</p>}
+        </Card>
+      )}
       <div className="takeaway">{takeaway}</div>
+      {rev && (
+        <Card title="Reverse DCF — what the price assumes" right="the market's implied bet">
+          <div className="rev-big">
+            The current price implies revenue growing about{" "}
+            <b className={rev.impliedGrowth >= (rev.histG ?? 0) ? "neg" : "pos"}>{pc(rev.impliedGrowth, 1)}</b> a year for the next five years.
+          </div>
+          <table className="fin" style={{ marginTop: 8 }}>
+            <tbody>
+              <tr><td>Growth the price implies</td><td className="bold">{pc(rev.impliedGrowth, 1)}{rev.capped === "high" ? "+" : ""}</td></tr>
+              {rev.histG != null && <tr><td>Growth over the last 3 years</td><td>{pc(rev.histG, 1)}</td></tr>}
+              <tr><td>Your Base-case growth</td><td>{pc(rev.baseG, 1)}</td></tr>
+            </tbody>
+          </table>
+          <Learn>
+            This flips the DCF around: instead of guessing growth, it asks what growth today's buyers must believe in.
+            If that number looks far above what the company has ever done, the market is paying for a story — decide for yourself if you buy it.
+          </Learn>
+        </Card>
+      )}
       {d.upside < -0.4 && (
         <div className="learn" style={{ borderLeftColor: "#b3372b", background: "#fbf1ef" }}>
           🔭 <b>Story-stock alert:</b> the market is paying far more than this company's last three years justify.
@@ -58,9 +93,9 @@ export function Overview({ state, R, cur }) {
               <tr><td>DCF value / share</td><td className="bold">{px(d.perShare, cur)}</td></tr>
               <tr><td>Current price</td><td>{px(h.price, cur)}</td></tr>
               <tr className="bold"><td>Upside / (downside)</td><td className={d.upside >= 0 ? "pos" : "neg"}>{pc(d.upside)}</td></tr>
-              <tr><td>WACC</td><td>{pc(d.wacc, 2)}</td></tr>
-              <tr><td>Enterprise value</td><td>{f0(d.ev)}</td></tr>
-              <tr><td>% of value in TV</td><td>{pc(d.tvPct)}</td></tr>
+              <tr><td><Term term="WACC" /></td><td>{pc(d.wacc, 2)}</td></tr>
+              <tr><td><Term term="Enterprise value" /></td><td>{f0(d.ev)}</td></tr>
+              <tr><td>% of value in <Term term="Terminal value">terminal value</Term></td><td>{pc(d.tvPct)}</td></tr>
               <tr><td>Bear / Bull per share</td><td>{px(br, cur)} / {px(bl, cur)}</td></tr>
             </tbody>
           </table>

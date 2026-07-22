@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { px, pc } from "@/lib/format";
 import Logo from "@/components/Logo";
 import HeroBackdrop from "@/components/HeroBackdrop";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const POPULAR = ["AAPL", "MSFT", "TSLA", "NVDA", "AMZN", "GOOGL", "META", "KO"];
 
@@ -70,6 +71,8 @@ export default function Home() {
           </div>
           <nav className="site-nav">
             <button onClick={() => document.getElementById("how")?.scrollIntoView({ behavior: "smooth" })}>How it works</button>
+            <a href="/compare">Compare</a>
+            <ThemeToggle />
             <button onClick={focusSearch}>Start</button>
           </nav>
         </header>

@@ -85,18 +85,24 @@ export function Overview({ state, R, cur, bad }) {
             The chart bankers put on page one of every pitch book: each bar is a valuation method's range,
             the dashed line is today's price. If the price sits left of most bars, the model says undervalued.
           </Learn>
-          <FootballField items={items} price={h.price} cur={cur} />
+          {bad ? (
+            <p style={{ color: "var(--grey)", fontSize: 13.5, padding: "20px 0", textAlign: "center" }}>
+              Not shown — a DCF isn't meaningful for this company (see note above).
+            </p>
+          ) : (
+            <FootballField items={items} price={h.price} cur={cur} />
+          )}
         </Card>
         <Card title="Verdict" right={state.hist.symbol}>
           <table className="fin">
             <tbody>
-              <tr><td>DCF value / share</td><td className="bold">{px(d.perShare, cur)}</td></tr>
+              <tr><td>DCF value / share</td><td className="bold">{bad ? "n/m" : px(d.perShare, cur)}</td></tr>
               <tr><td>Current price</td><td>{px(h.price, cur)}</td></tr>
-              <tr className="bold"><td>Upside / (downside)</td><td className={d.upside >= 0 ? "pos" : "neg"}>{pc(d.upside)}</td></tr>
+              <tr className="bold"><td>Upside / (downside)</td><td className={bad ? "" : d.upside >= 0 ? "pos" : "neg"}>{bad ? "n/m" : pc(d.upside)}</td></tr>
               <tr><td><Term term="WACC" /></td><td>{pc(d.wacc, 2)}</td></tr>
-              <tr><td><Term term="Enterprise value" /></td><td>{f0(d.ev)}</td></tr>
-              <tr><td>% of value in <Term term="Terminal value">terminal value</Term></td><td>{pc(d.tvPct)}</td></tr>
-              <tr><td>Bear / Bull per share</td><td>{px(br, cur)} / {px(bl, cur)}</td></tr>
+              <tr><td><Term term="Enterprise value" /></td><td>{bad ? "n/m" : f0(d.ev)}</td></tr>
+              <tr><td>% of value in <Term term="Terminal value">terminal value</Term></td><td>{bad ? "n/m" : pc(d.tvPct)}</td></tr>
+              <tr><td>Bear / Bull per share</td><td>{bad ? "n/m" : `${px(br, cur)} / ${px(bl, cur)}`}</td></tr>
             </tbody>
           </table>
           <Learn>If even the Bear case beats today's price, that's a margin of safety. If only Bull works, you're paying for perfection.</Learn>

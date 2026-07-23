@@ -21,6 +21,7 @@
   --c-ink: #1c1917;
   --c-surface: #fffdf9;
   --band-alt: #efe9dd;
+  --accent: #3a2620;      /* brown text accent — flips light in dark mode */
 }
 /* ---------- dark theme ---------- */
 html[data-theme="dark"] {
@@ -37,7 +38,14 @@ html[data-theme="dark"] {
   --c-ink: #ece3d6;
   --c-surface: #201913;
   --band-alt: #1a140f;
+  --accent: #e6c48f;      /* warm gold — visible on dark */
 }
+/* dark surfaces: give cards clearer definition */
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .lp-card,
+html[data-theme="dark"] .lp-demo-card,
+html[data-theme="dark"] .model-card { border-color: rgba(255,255,255,0.10); background: #201913; }
+html[data-theme="dark"] .step3 .n { background: #e6c48f; color: #1a120c; }
 html[data-theme="dark"] body { background: var(--cream); }
 html[data-theme="dark"] .badge.up { background: #16351f; }
 html[data-theme="dark"] .badge.down { background: #3a1f1c; }
@@ -63,6 +71,11 @@ a { color: inherit; text-decoration: none; }
 .site-nav { display: flex; gap: 22px; margin-left: auto; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
 .site-nav a, .site-nav button { background: none; border: none; color: #cbbfae; cursor: pointer; font: inherit; letter-spacing: inherit; text-transform: inherit; padding: 4px 0; }
 .site-nav a:hover, .site-nav button:hover { color: #fff; }
+.site-nav a, .site-nav button { position: relative; }
+.site-nav a::after, .site-nav button::after { content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 0.28s cubic-bezier(.2,.7,.2,1); }
+.site-nav a:hover::after, .site-nav button:hover::after { transform: scaleX(1); }
+.chips button { transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease; }
+.chips button:hover { transform: translateY(-2px); }
 
 /* ---------- hero KPIs (Markly) ---------- */
 .hero { background: var(--brown); color: #f5efe6; padding: 34px 0 66px; }
@@ -111,7 +124,7 @@ table.fin tr.section td { font-size: 10.5px; letter-spacing: 0.12em; text-transf
 .scen-row button.on { background: var(--brown); color: #f5efe6; border-color: var(--brown); font-weight: 700; }
 .btn { display: inline-block; width: 100%; border: none; background: var(--brown); color: #f5efe6; font: inherit; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; padding: 13px 18px; cursor: pointer; text-align: center; margin-top: 16px; }
 .btn:hover { background: var(--brown-2); }
-.btn.ghost { background: transparent; color: var(--brown); border: 1px solid var(--brown); }
+.btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
 
 /* ---------- learn notes ---------- */
 .learn { background: #faf6ec; border-left: 3px solid var(--gold); padding: 9px 13px; margin: 12px 0; font-size: 12.5px; color: #5c5340; }
@@ -220,9 +233,9 @@ html[data-theme="dark"] .skel { background: linear-gradient(90deg, #2a2119 25%, 
 
 .lp-cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .lp-card { background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 20px; }
-.lp-card-tag { font-weight: 700; font-size: 14px; margin-bottom: 8px; color: var(--brown); }
+.lp-card-tag { font-weight: 700; font-size: 14px; margin-bottom: 8px; color: var(--accent); }
 .lp-card p { color: var(--grey); font-size: 13.5px; line-height: 1.55; }
-.lp-turn { text-align: center; font-family: var(--serif); font-size: 20px; font-weight: 600; margin-top: 28px; color: var(--brown); }
+.lp-turn { text-align: center; font-family: var(--serif); font-size: 20px; font-weight: 600; margin-top: 28px; color: var(--accent); }
 @media (max-width: 760px) { .lp-cards3 { grid-template-columns: 1fr; } }
 
 .lp-steps { margin-top: 6px; }
@@ -323,7 +336,8 @@ html[data-theme="dark"] .skel { background: linear-gradient(90deg, #2a2119 25%, 
 .cine-inner { margin: auto; text-align: center; max-width: 760px; padding: 0 24px; z-index: 2; }
 .cine-inner .lp-eyebrow { color: #e6c48f; }
 .cine-h1 { font-family: var(--serif); font-size: 66px; line-height: 1.0; font-weight: 600; letter-spacing: -0.015em; color: #f7eddd; text-shadow: 0 2px 40px rgba(18,10,5,0.55); }
-.cine-h1 .hw { display: inline-block; margin-right: 0.22em; opacity: 0; transform: translateY(30px); animation: heroUp 0.75s cubic-bezier(.2,.75,.2,1) forwards; }
+.cine-h1 .hw { display: inline-block; margin-right: 0.22em; opacity: 0; transform: translateY(60px) rotate(2deg); filter: blur(6px); animation: heroWord 0.9s cubic-bezier(.16,.85,.3,1) forwards; }
+@keyframes heroWord { to { opacity: 1; transform: none; filter: blur(0); } }
 .hin { opacity: 0; transform: translateY(16px); animation: heroUp 0.75s cubic-bezier(.2,.75,.2,1) forwards; }
 @keyframes heroUp { to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .cine-h1 .hw, .hin { opacity: 1; transform: none; animation: none; } }
@@ -359,8 +373,8 @@ html[data-theme="dark"] .sheet-wrap::before { background-image: linear-gradient(
 .reveal .lp-demo-list,
 .reveal .lp-qa,
 .reveal .lp-feat-row .feat {
-  opacity: 0; transform: translateY(26px);
-  transition: opacity 0.7s cubic-bezier(.2,.7,.2,1), transform 0.7s cubic-bezier(.2,.7,.2,1),
+  opacity: 0; transform: translateY(46px) scale(0.97);
+  transition: opacity 0.75s cubic-bezier(.16,.8,.3,1), transform 0.75s cubic-bezier(.16,.8,.3,1),
               box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
 }
 .reveal.in .smallcaps,
@@ -406,7 +420,7 @@ html[data-theme="dark"] .sheet-wrap::before { background-image: linear-gradient(
 .model-card { transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease; }
 .model-card:hover { transform: translateY(-4px); }
 .feat { transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease; }
-.feat:hover { border-color: var(--brown); color: var(--brown); background: #fff; }
+.feat:hover { border-color: var(--accent); color: var(--accent); background: var(--paper); }
 .step3 .n { transition: transform 0.3s ease; }
 .step3:hover .n { transform: scale(1.12); }
 

@@ -9,6 +9,8 @@ const isUS = (r) => {
 };
 // drop leveraged/inverse ETFs & obvious non-operating tickers by name
 const junk = (r) => /(\d[xX]|leveraged|inverse|bull |bear |etf|etn)/i.test(r.name || "");
+// preferred-share series (e.g. JPM-PC, BAC-PL) clutter results — keep class shares like BRK-B
+const pref = (r) => /-P[A-Z]?$/.test(r.symbol || "");
 
 export async function GET(req) {
   const q = new URL(req.url).searchParams.get("q")?.trim();
@@ -28,8 +30,9 @@ export async function GET(req) {
     });
     // US-listed first (these actually work); exact ticker match floated to top
     const ql = q.toLowerCase();
-    const us = all.filter((r) => isUS(r) && !junk(r));
-    const list = (us.length ? us : all.filter((r) => !junk(r)))
+    const keep = (r) => !junk(r) && (!pref(r) || r.symbol.toLowerCase() === ql);
+    const us = all.filter((r) => isUS(r) && keep(r));
+    const list = (us.length ? us : all.filter(keep))
       .sort((a, b) => (b.symbol.toLowerCase() === ql ? 1 : 0) - (a.symbol.toLowerCase() === ql ? 1 : 0))
       .slice(0, 8);
     return NextResponse.json(list);

@@ -481,10 +481,16 @@ html[data-theme="dark"] .sheet-wrap::before { background-image: linear-gradient(
 
 /* ---------- print / PDF ---------- */
 @media print {
-  .cine-header, .site-header, .tabbar, .hero, .controls-card, .lp-footer, .footer, .hero-photo { display: none !important; }
+  .cine-header, .site-header, .tabbar, .controls-card, .lp-footer, .footer, .hero-photo { display: none !important; }
   .two-col { grid-template-columns: 1fr !important; }
   .sheet { margin: 0 !important; padding: 0 !important; }
   body { background: #fff !important; }
+  /* keep the headline KPIs in the PDF, but on white with dark text */
+  .hero { background: #fff !important; color: #241a10 !important; padding: 0 0 14px !important; border-bottom: 1px solid #ddd; margin-bottom: 14px; }
+  .hero .inner { padding: 0 !important; gap: 18px; }
+  .hero .kpi .val { color: #241a10 !important; }
+  .hero .kpi .smallcaps, .hero .kpi .sub { color: #6b5c48 !important; }
+  .fit-warn { border: 1px solid #ddd !important; }
   .card { break-inside: avoid; box-shadow: none !important; border: 1px solid #ddd !important; }
   .learn { display: none !important; }
   @page { margin: 14mm; }

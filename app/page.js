@@ -199,10 +199,10 @@ export default function Home() {
               <div className="lp-demo-head">
                 <div>
                   <div className="smallcaps">Apple Inc. · intrinsic value</div>
-                  <div className="lp-demo-big">$112.23</div>
+                  <div className="lp-demo-big">$112.24</div>
                   <div className="lp-demo-note">per share · Base case DCF</div>
                 </div>
-                <div className="lp-demo-badge down">−65.8% vs price</div>
+                <div className="lp-demo-badge down">−65.6% vs price</div>
               </div>
               <div className="lp-ff">
                 {[

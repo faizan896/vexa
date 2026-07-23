@@ -5,6 +5,15 @@ import {
 } from "recharts";
 import { f0, px, pc } from "@/lib/format";
 
+// compact axis ticks: 1740000 → "1.7T", 400000 → "400B", 5000 → "5B"
+const ct = (v) => {
+  const a = Math.abs(v);
+  if (a >= 1e6) return (v / 1e6).toFixed(1) + "T";
+  if (a >= 1e3) return Math.round(v / 1e3) + "B";
+  if (a >= 1) return Math.round(v) + "M";
+  return "0";
+};
+
 // axis/ink read from CSS vars so charts adapt to light & dark; bar colours stay brand
 const INK = "var(--c-ink)", GREY = "var(--c-axis)", GRID = "var(--c-grid)";
 const PLUM = "#6d6d9c", TAN = "#a1836a", BROWN = "#7a5c46",
@@ -20,7 +29,7 @@ export function RevFcfChart({ f, years }) {
       <ComposedChart data={data} margin={{ top: 12, right: 8, left: 8, bottom: 0 }}>
         <CartesianGrid stroke={GRID} vertical={false} />
         <XAxis dataKey="name" tick={{ fontSize: 11, fill: GREY }} axisLine={false} tickLine={false} />
-        <YAxis tick={{ fontSize: 11, fill: GREY }} axisLine={false} tickLine={false} tickFormatter={f0} width={54} />
+        <YAxis tick={{ fontSize: 11, fill: GREY }} axisLine={false} tickLine={false} tickFormatter={ct} width={44} />
         <Tooltip {...tip} formatter={(v) => f0(v)} />
         <Legend wrapperStyle={{ fontSize: 12 }} />
         <Bar dataKey="Revenue" fill={PLUM} radius={[2, 2, 0, 0]} maxBarSize={46} />
@@ -67,14 +76,14 @@ export function Waterfall({ steps, cur }) {
       <BarChart data={data} margin={{ top: 18, right: 8, left: 8, bottom: 0 }}>
         <CartesianGrid stroke={GRID} vertical={false} />
         <XAxis dataKey="name" tick={{ fontSize: 10.5, fill: GREY }} interval={0} axisLine={false} tickLine={false} />
-        <YAxis tick={{ fontSize: 11, fill: GREY }} tickFormatter={f0} axisLine={false} tickLine={false} width={56} />
+        <YAxis tick={{ fontSize: 11, fill: GREY }} tickFormatter={ct} axisLine={false} tickLine={false} width={44} />
         <Tooltip {...tip} formatter={(v, n, p) => (n === "val" ? f0(p.payload.raw) : null)} />
         <Bar dataKey="base" stackId="w" fill="transparent" />
         <Bar dataKey="val" stackId="w" radius={2} maxBarSize={54}>
           {data.map((d, i) => (
             <Cell key={i} fill={d.total ? BROWN : d.raw >= 0 ? PLUM : BAD} />
           ))}
-          <LabelList dataKey="raw" position="top" formatter={f0} style={{ fontSize: 10.5, fill: INK }} />
+          <LabelList dataKey="raw" position="top" formatter={ct} style={{ fontSize: 10, fill: INK }} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>
@@ -112,7 +121,7 @@ export function ScenarioPaths({ scenarios, years, histRev }) {
       <ComposedChart data={data} margin={{ top: 10, right: 8, left: 8, bottom: 0 }}>
         <CartesianGrid stroke={GRID} vertical={false} />
         <XAxis dataKey="name" tick={{ fontSize: 11, fill: GREY }} axisLine={false} tickLine={false} />
-        <YAxis tick={{ fontSize: 11, fill: GREY }} tickFormatter={f0} axisLine={false} tickLine={false} width={56} />
+        <YAxis tick={{ fontSize: 11, fill: GREY }} tickFormatter={ct} axisLine={false} tickLine={false} width={44} />
         <Tooltip {...tip} formatter={f0} />
         <Legend wrapperStyle={{ fontSize: 12 }} />
         {names.map((n, i) => (
@@ -136,7 +145,7 @@ export function DebtPaydown({ lbo, years }) {
       <AreaChart data={data} margin={{ top: 10, right: 8, left: 8, bottom: 0 }}>
         <CartesianGrid stroke={GRID} vertical={false} />
         <XAxis dataKey="name" tick={{ fontSize: 11, fill: GREY }} axisLine={false} tickLine={false} />
-        <YAxis tick={{ fontSize: 11, fill: GREY }} tickFormatter={f0} axisLine={false} tickLine={false} width={56} />
+        <YAxis tick={{ fontSize: 11, fill: GREY }} tickFormatter={ct} axisLine={false} tickLine={false} width={44} />
         <Tooltip {...tip} formatter={f0} />
         <Legend wrapperStyle={{ fontSize: 12 }} />
         <Area dataKey="Debt" stroke={BAD} fill="#f3ded9" strokeWidth={2} />

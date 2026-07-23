@@ -73,6 +73,8 @@ export default function Compare() {
   const ebitdaMargin = (x) => { const L = x.state.hist.rev.length - 1; const h = x.state.hist; return (h.rev[L] - h.cogs[L] - h.sga[L] + h.da[L]) / h.rev[L]; };
   const evEbitda = (x) => { const L = x.state.hist.rev.length - 1; const h = x.state.hist; const eb = h.rev[L] - h.cogs[L] - h.sga[L] + h.da[L]; return eb > 0 ? (h.shares[L] * h.price + h.debt[L] - h.cash[L]) / eb : 0; };
   const histG = (x) => { const h = x.state.hist; const L = h.rev.length - 1; return L >= 1 && h.rev[0] > 0 ? Math.pow(h.rev[L] / h.rev[0], 1 / L) - 1 : 0; };
+  // same guard as the model page — a DCF is meaningless for banks/insurers and loss-makers
+  const bad = (x) => { const d = x.base.dcf; return !(d.ev > 0 && d.perShare > 0 && d.wacc > 0) || /bank|insurance/i.test(x.state.co?.industry || ""); };
 
   return (
     <>
@@ -118,12 +120,15 @@ export default function Compare() {
                 {metric("EBITDA margin", (x) => pc(ebitdaMargin(x)), (x) => pc(ebitdaMargin(x)))}
                 {metric("EV / EBITDA", (x) => mx(evEbitda(x)), (x) => mx(evEbitda(x)))}
                 <tr className="section"><td colSpan={3}>Vexa valuation (Base case)</td></tr>
-                {metric("WACC", (x) => pc(x.base.dcf.wacc, 1), (x) => pc(x.base.dcf.wacc, 1))}
-                {metric("DCF value / share", (x) => px(x.base.dcf.perShare, cA), (x) => px(x.base.dcf.perShare, cB), true)}
-                {metric("Upside / (downside)", (x) => <span className={x.base.dcf.upside >= 0 ? "pos" : "neg"}>{pc(x.base.dcf.upside)}</span>, (x) => <span className={x.base.dcf.upside >= 0 ? "pos" : "neg"}>{pc(x.base.dcf.upside)}</span>, true)}
+                {metric("WACC", (x) => bad(x) ? "n/m" : pc(x.base.dcf.wacc, 1), (x) => bad(x) ? "n/m" : pc(x.base.dcf.wacc, 1))}
+                {metric("DCF value / share", (x) => bad(x) ? "n/m" : px(x.base.dcf.perShare, cA), (x) => bad(x) ? "n/m" : px(x.base.dcf.perShare, cB), true)}
+                {metric("Upside / (downside)", (x) => bad(x) ? "n/m" : <span className={x.base.dcf.upside >= 0 ? "pos" : "neg"}>{pc(x.base.dcf.upside)}</span>, (x) => bad(x) ? "n/m" : <span className={x.base.dcf.upside >= 0 ? "pos" : "neg"}>{pc(x.base.dcf.upside)}</span>, true)}
               </tbody>
             </table>
-            <p className="footnote">Both models use each company's own historical growth and margins as the Base case. Open either in the full model to change assumptions. Educational tool — not investment advice.</p>
+            <p className="footnote">
+              {((a && !a.error && bad(a)) || (b && !b.error && bad(b))) && <><b>n/m</b> = not meaningful: a standard DCF doesn&apos;t fit banks, insurers, or companies that aren&apos;t operating-profitable. </>}
+              Both models use each company&apos;s own historical growth and margins as the Base case. Open either in the full model to change assumptions. Educational tool — not investment advice.
+            </p>
           </div>
         )}
       </main>

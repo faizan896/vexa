@@ -97,11 +97,11 @@ export default function Home() {
         <motion.div className="cine-inner" style={{ y: heroY, opacity: heroOp }}>
           <div className="lp-eyebrow hin" style={{ animationDelay: "0.05s" }}>FINANCIAL MODELING · FOR EVERYONE</div>
           <h1 className="serif cine-h1">
-            {["What", "is", "any", "company", "\n", "really", "worth?"].map((w, i) =>
-              w === "\n" ? <br key={i} /> : (
-                <span className="hw" key={i} style={{ animationDelay: `${0.18 + i * 0.07}s` }}>{w}</span>
-              )
-            )}
+            {["What is any company", "really worth?"].map((line, i) => (
+              <span className="cine-line" key={i}>
+                <span className="cine-line-in" style={{ animationDelay: `${0.12 + i * 0.15}s` }}>{line}</span>
+              </span>
+            ))}
           </h1>
           <p className="cine-sub hin" style={{ animationDelay: "0.72s" }}>
             Type a ticker and Vexa loads the company's real financials, then helps you build

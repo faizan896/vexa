@@ -178,13 +178,19 @@ export default function ModelPage() {
         </section>
         <div className="sheet">
           <div className="tabbar">
-            {TABS.map((t) => (
-              <button key={t} className={tab === t ? "on" : ""} onClick={() => setTab(t)}>{t}</button>
-            ))}
-            <button style={{ marginLeft: "auto" }} onClick={() => setWalk(true)}>▶ Walkthrough</button>
-            <button onClick={exportXl}>{xlBusy ? "…" : "⬇ Excel"}</button>
-            <button onClick={share}>{copied ? "✓ Link copied" : "↗ Share"}</button>
-            <button onClick={() => setWizard(true)}>↻ Wizard</button>
+            <div className="tabbar-tabs">
+              {TABS.map((t) => (
+                <button key={t} className={tab === t ? "on" : ""} onClick={() => setTab(t)}>{t}</button>
+              ))}
+            </div>
+            <div className="tabbar-actions">
+              <button className="act" disabled={notMeaningful}
+                title={notMeaningful ? "Best on a profitable operating company — open Apple to try it" : "Learn how the three statements connect"}
+                onClick={() => setWalk(true)}>▶ Walkthrough</button>
+              <button className="act" onClick={exportXl}>{xlBusy ? "…" : "⬇ Excel"}</button>
+              <button className="act" onClick={share}>{copied ? "✓ Copied" : "↗ Share"}</button>
+              <button className="act" onClick={() => setWizard(true)}>↻ Wizard</button>
+            </div>
           </div>
           {notMeaningful && (
             <div className="fit-warn">

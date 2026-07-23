@@ -9,7 +9,7 @@ import {
 const FYRS = (n = 5) => Array.from({ length: n }, (_, i) => "Year " + (i + 1));
 
 /* ============ OVERVIEW ============ */
-export function Overview({ state, R, cur }) {
+export function Overview({ state, R, cur, bad }) {
   const d = R.base.dcf, f = R.base.f, h = state.hist;
   const [b, bl, br] = R.scenarios.map((s) => s.dcf.perShare);
   const range = (h.range || "").split("-").map(Number);
@@ -42,8 +42,8 @@ export function Overview({ state, R, cur }) {
           {co.description && <p className="co-desc">{co.description.length > 420 ? co.description.slice(0, 420).trim() + "…" : co.description}</p>}
         </Card>
       )}
-      <div className="takeaway">{takeaway}</div>
-      {rev && (
+      {!bad && <div className="takeaway">{takeaway}</div>}
+      {!bad && rev && (
         <Card title="Reverse DCF — what the price assumes" right="the market's implied bet">
           <div className="rev-big">
             The current price implies revenue growing about{" "}
@@ -62,7 +62,7 @@ export function Overview({ state, R, cur }) {
           </Learn>
         </Card>
       )}
-      {d.upside < -0.4 && (
+      {!bad && d.upside < -0.4 && (
         <div className="learn" style={{ borderLeftColor: "#b3372b", background: "rgba(179,55,43,0.09)" }}>
           🔭 <b>Story-stock alert:</b> the market is paying far more than this company's last three years justify.
           That usually means investors are pricing businesses that aren't in the historicals yet — new products,
@@ -71,7 +71,7 @@ export function Overview({ state, R, cur }) {
           Whatever you had to type in — <i>that</i> is what buyers at this price must believe.
         </div>
       )}
-      {d.upside > 0.6 && (
+      {!bad && d.upside > 0.6 && (
         <div className="learn" style={{ borderLeftColor: "#1a7a4a", background: "rgba(26,122,74,0.10)" }}>
           🧐 <b>Too-cheap-to-be-true check:</b> the model sees far more value than the market. Before celebrating,
           ask why: is one unusually good year inflating the margins? Unusual debt or cash items? Markets are

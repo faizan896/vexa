@@ -126,6 +126,9 @@ export default function ModelPage() {
     );
 
   const d = R.base.dcf, h = state.hist;
+  // when the DCF can't produce a sensible answer (loss-making firms, banks/insurers whose
+  // model doesn't fit), show a clear note instead of scary negative numbers
+  const notMeaningful = !(d.ev > 0 && d.perShare > 0 && d.wacc > 0) || /bank|insurance/i.test(state.co?.industry || "");
   const suggested = {
     cagr: state.asm.growth[0], gm: state.asm.gm[0], sga: state.asm.sgaPct[0], beta: state.asm.beta,
     waccOf: (b) => {
@@ -146,17 +149,17 @@ export default function ModelPage() {
           <div className="inner">
             <div className="kpi">
               <div className="smallcaps">{h.name} · intrinsic value</div>
-              <div className="val"><AnimatedNumber value={d.perShare} format={(x) => px(x, cur)} /></div>
+              <div className="val">{notMeaningful ? "n/m" : <AnimatedNumber value={d.perShare} format={(x) => px(x, cur)} />}</div>
               <div className="sub">per share · {["Base", "Bull", "Bear"][scen]} case DCF</div>
             </div>
             <div className="kpi">
               <div className="smallcaps">vs. market price {px(h.price, cur)}</div>
-              <div className="val" style={{ color: d.upside >= 0 ? "#a8d5b5" : "#e8a79b" }}><AnimatedNumber value={d.upside} format={(x) => pc(x)} /></div>
-              <div className="sub">{d.upside >= 0 ? "model says undervalued" : "model says overvalued"}</div>
+              <div className="val" style={{ color: notMeaningful ? "#cbbfae" : d.upside >= 0 ? "#a8d5b5" : "#e8a79b" }}>{notMeaningful ? "n/m" : <AnimatedNumber value={d.upside} format={(x) => pc(x)} />}</div>
+              <div className="sub">{notMeaningful ? "model doesn't fit this company" : d.upside >= 0 ? "model says undervalued" : "model says overvalued"}</div>
             </div>
             <div className="kpi">
               <div className="smallcaps">Enterprise value</div>
-              <div className="val">{cur}<AnimatedNumber value={d.ev} format={(x) => big(x)} /></div>
+              <div className="val">{notMeaningful ? "n/m" : <>{cur}<AnimatedNumber value={d.ev} format={(x) => big(x)} /></>}</div>
               <div className="sub"><Term term="WACC" /> {pc(d.wacc, 2)} · TV {pc(d.tvPct, 0)} of value</div>
             </div>
           </div>
@@ -169,9 +172,18 @@ export default function ModelPage() {
             <button style={{ marginLeft: "auto" }} onClick={share}>{copied ? "✓ Link copied" : "↗ Share"}</button>
             <button onClick={() => setWizard(true)}>↻ Wizard</button>
           </div>
+          {notMeaningful && (
+            <div className="fit-warn">
+              <b>Heads up — this model doesn't fit {h.name}.</b> Vexa is built for ordinary operating companies.
+              {/bank|insurance/i.test(state.co?.industry || "")
+                ? " Banks and insurers work completely differently — their debt is their product and there's no “cost of revenue”, so a standard DCF is meaningless here."
+                : " This company isn't currently profitable on an operating basis, so a discounted-cash-flow value comes out negative and isn't useful."}
+              {" "}You can still explore the tabs to learn, but try a profitable operating company — <a onClick={() => location.assign("/model/AAPL")} style={{ textDecoration: "underline", cursor: "pointer" }}>Apple</a>, Nike, or Coca-Cola — to see the model at its best.
+            </div>
+          )}
           <div className="two-col">
             <div style={{ display: "grid", gap: 20 }}>
-              {tab === "Overview" && <Overview state={state} R={R} cur={cur} />}
+              {tab === "Overview" && <Overview state={state} R={R} cur={cur} bad={notMeaningful} />}
               {tab === "3-Statement" && <ThreeStatement state={state} R={R} />}
               {tab === "DCF" && <DcfPanel state={state} R={R} cur={cur} />}
               {tab === "Scenarios" && <ScenariosPanel state={state} R={R} cur={cur} scen={scen} setScen={setScen} />}

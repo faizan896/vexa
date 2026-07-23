@@ -271,6 +271,8 @@ html[data-theme="dark"] .skel { background: linear-gradient(90deg, #2a2119 25%, 
 .lp-feat-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 
 .takeaway { font-size: 16px; line-height: 1.55; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--brown); border-radius: 4px; padding: 14px 18px; }
+.fit-warn { font-size: 13.5px; line-height: 1.6; color: var(--ink); background: rgba(179,55,43,0.10); border: 1px solid rgba(179,55,43,0.3); border-radius: 6px; padding: 14px 18px; }
+.fit-warn b { color: var(--bad); }
 
 /* company overview */
 .co-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 20px; margin: 6px 0 4px; }

@@ -15,27 +15,3 @@ Search a ticker (AAPL, TSLA, NVDA, KO…) and Vexa builds, live in the browser:
 - **LBO** — sources & uses, 5-year debt paydown, money multiple and IRR
 
 Plus the charts banks actually use: **football field**, **valuation waterfall**, **tornado chart**, scenario paths and LBO debt-paydown.
-
-## Why it's not just Excel in a browser
-
-- A **guided wizard** asks 4 plain-language questions with data-derived suggestions — the model builds itself behind your answers
-- **Learn mode** annotates every screen: what the number is, why it matters, what to argue about
-- Every edit re-runs all seven analyses instantly
-
-## Getting started
-
-```bash
-npm install
-cp .env.example .env.local   # add your free FMP key
-npm run dev
-```
-
-Get a free API key at [financialmodelingprep.com](https://site.financialmodelingprep.com). The free plan covers US-listed companies (most global giants have a US ticker or ADR — TM, SONY, BABA, SAP…).
-
-## Stack
-
-Next.js 14 (App Router) · React 18 · Recharts · Financial Modeling Prep API (key stays server-side in API routes). Models autosave to the browser (localStorage).
-
-## Disclaimer
-
-Educational tool — not investment advice.

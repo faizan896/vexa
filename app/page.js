@@ -17,6 +17,7 @@ export default function Home() {
   const router = useRouter();
   const [q, setQ] = useState("");
   const [results, setResults] = useState([]);
+  const [emptyResult, setEmptyResult] = useState(false);
   const [saved, setSaved] = useState([]);
   const timer = useRef(null);
 
@@ -28,14 +29,17 @@ export default function Home() {
 
   useEffect(() => {
     clearTimeout(timer.current);
-    if (q.trim().length < 2) return setResults([]);
+    if (q.trim().length < 2) { setResults([]); setEmptyResult(false); return; }
     timer.current = setTimeout(async () => {
       try {
         const r = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
         const j = await r.json();
-        setResults(Array.isArray(j) ? j : []);
+        const arr = Array.isArray(j) ? j : [];
+        setResults(arr);
+        setEmptyResult(arr.length === 0);
       } catch {
         setResults([]);
+        setEmptyResult(true);
       }
     }, 350);
     return () => clearTimeout(timer.current);
@@ -124,6 +128,11 @@ export default function Home() {
                     <span className="exch">{r.exchange || r.exchangeFullName}</span>
                   </button>
                 ))}
+              </div>
+            )}
+            {results.length === 0 && emptyResult && q.trim().length >= 2 && (
+              <div className="search-results search-empty">
+                No US-listed match for “{q.trim()}”. Try the US ticker or ADR — e.g. TM for Toyota, BABA for Alibaba.
               </div>
             )}
           </div>

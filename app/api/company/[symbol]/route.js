@@ -4,6 +4,9 @@ import { checkRateLimit, clientIp } from "@/lib/ratelimit";
 const BASE = "https://financialmodelingprep.com/stable";
 // tickers are short and alphanumeric (plus . and - for class/preferred shares)
 const VALID_SYMBOL = /^[A-Z0-9.\-]{1,10}$/;
+// last-good in-memory cache so a transient upstream outage degrades gracefully
+// (serve the previous good payload marked stale) instead of a dead screen.
+const LAST_GOOD = new Map();
 
 export async function GET(req, { params }) {
   if (!(await checkRateLimit(`company:${clientIp(req)}`, { limit: 30, windowMs: 10_000 })).ok)
@@ -17,6 +20,7 @@ export async function GET(req, { params }) {
   const get = async (path) => {
     const r = await fetch(`${BASE}/${path}${path.includes("?") ? "&" : "?"}apikey=${key}`, { next: { revalidate: 3600 } });
     if (r.status === 402 || r.status === 403) throw { code: "PLAN" };
+    if (r.status === 429 || r.status >= 500) throw { code: "UPSTREAM", status: r.status }; // rate-limit / outage on the data provider
     if (!r.ok) throw { code: "HTTP", status: r.status };
     return r.json();
   };
@@ -38,13 +42,25 @@ export async function GET(req, { params }) {
     }
     // API returns newest-first; engine expects oldest-first
     const asc = (a) => [...a].reverse();
-    return NextResponse.json({ profile, income: asc(income), balance: asc(balance), cashflow: asc(cashflow) });
+    const data = { profile, income: asc(income), balance: asc(balance), cashflow: asc(cashflow) };
+    LAST_GOOD.set(symbol, data);
+    if (LAST_GOOD.size > 500) LAST_GOOD.delete(LAST_GOOD.keys().next().value);
+    return NextResponse.json(data);
   } catch (e) {
+    // graceful degradation: if we served this ticker before, return the stale copy
+    const cached = LAST_GOOD.get(symbol);
+    if (cached && e?.code !== "PLAN") return NextResponse.json({ ...cached, stale: true });
+
     if (e?.code === "PLAN")
       return NextResponse.json(
         { error: "This ticker isn't covered by the free data plan (usually non-US listings). Try the company's US ticker or ADR instead — e.g. TM for Toyota, SONY for Sony, SAP for SAP." },
         { status: 402 }
       );
-    return NextResponse.json({ error: "Could not load company data. Check the ticker and try again." }, { status: 502 });
+    if (e?.code === "UPSTREAM")
+      return NextResponse.json(
+        { error: "Market data is temporarily unavailable — this is on the data provider's side, not the ticker. Please try again in a moment.", upstream: true },
+        { status: 503 }
+      );
+    return NextResponse.json({ error: "We couldn't load that company. Please retry, or check the ticker." }, { status: 502 });
   }
 }

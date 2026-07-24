@@ -16,7 +16,9 @@ const ct = (v) => {
 
 // axis/ink read from CSS vars so charts adapt to light & dark; bar colours stay brand
 const INK = "var(--c-ink)", GREY = "var(--c-axis)", GRID = "var(--c-grid)";
-const PLUM = "#6d6d9c", TAN = "#a1836a", BROWN = "#7a5c46",
+// brand hues, but with more separation between series for faster comparison:
+// PLUM = cool blue-violet, TAN = warm amber, BROWN = deep neutral
+const PLUM = "#5f5fa6", TAN = "#c1913f", BROWN = "#6d503c",
   GOOD = "#1f9a58", BAD = "#c9483b", GOLD = "#c19a45";
 
 const tip = { contentStyle: { background: "var(--c-surface)", border: "1px solid var(--line)", color: "var(--c-ink)", fontSize: 12.5, fontFamily: "inherit", borderRadius: 6 }, itemStyle: { color: "var(--c-ink)" }, labelStyle: { color: "var(--c-ink)" } };

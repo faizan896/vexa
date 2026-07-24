@@ -12,6 +12,7 @@ import { AnimatedNumber } from "@/components/Motion";
 import Term from "@/components/Term";
 import Wizard from "@/components/Wizard";
 import Walkthrough from "@/components/Walkthrough";
+import Icon from "@/components/Icon";
 import { exportModelXlsx } from "@/lib/exportXlsx";
 import { Overview, ThreeStatement, DcfPanel, ScenariosPanel, SensitivityPanel, CapPanel, MaPanel, LboPanel } from "@/components/Panels";
 
@@ -61,6 +62,8 @@ export default function ModelClient() {
   const [xlBusy, setXlBusy] = useState(false);
   const [audit, setAudit] = useState(false);
   const [traceKey, setTraceKey] = useState(0);
+  const [reload, setReload] = useState(0);
+  const [stale, setStale] = useState(false);
   const xlBusyRef = useRef(false);
 
   const exportXl = async () => {
@@ -85,6 +88,7 @@ export default function ModelClient() {
         const j = await r.json();
         if (dead) return;
         if (!r.ok) return setError(j.error || "Could not load data.");
+        setStale(!!j.stale);
         const st = deriveState(j);
         // 1) shared link takes priority, 2) then saved, 3) else wizard
         const shared = decodeShare();
@@ -103,7 +107,7 @@ export default function ModelClient() {
       }
     })();
     return () => { dead = true; };
-  }, [sym]);
+  }, [sym, reload]);
 
   const R = useRunAll(state, scen);
   const cur = state ? curSym(state.hist.currency) : "$";
@@ -148,7 +152,11 @@ export default function ModelClient() {
         <div className="err-box">
           <h1 className="serif">Hmm — {sym} didn't load</h1>
           <p>{error}</p>
-          <Link className="btn ghost" style={{ width: "auto", padding: "12px 26px" }} href="/">← Back to search</Link>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <button className="btn ghost" style={{ width: "auto", padding: "12px 26px" }}
+              onClick={() => { setError(null); setState(null); setReload((x) => x + 1); }}>Retry</button>
+            <Link className="btn ghost" style={{ width: "auto", padding: "12px 26px" }} href="/">← Back to search</Link>
+          </div>
         </div>
       </Shell>
     );
@@ -215,7 +223,7 @@ export default function ModelClient() {
         ["Cost of equity (rf + β·ERP)", `${pc(state.asm.rf)} + ${state.asm.beta.toFixed(2)}·${pc(state.asm.erp)} = ${pc(d.ke, 2)}`],
         ["After-tax cost of debt", pc(d.kdAT, 2)],
         ["Equity weight / debt weight", `${pc(d.we, 1)} / ${pc(d.wd, 1)}`],
-        ["WACC = wₑ·kₑ + w_d·k_d", pc(d.wacc, 2)],
+        ["WACC (equity-wt × cost of equity + debt-wt × after-tax debt)", pc(d.wacc, 2)],
         ["PV of 5-yr forecast FCF", `${cur}${big(d.pvF)}`],
         ["+ PV of terminal value", `${cur}${big(d.pvTV)}`],
         ["= Enterprise value", `${cur}${big(d.ev)}`],
@@ -242,7 +250,7 @@ export default function ModelClient() {
               <div className="val">{notMeaningful ? "n/m" : <AnimatedNumber value={d.perShare} format={(x) => px(x, cur)} />}</div>
               <div className="sub" aria-live="polite">
                 {delta && !notMeaningful
-                  ? <span className={delta.abs >= 0 ? "pos" : "neg"}>{delta.abs >= 0 ? "▲ +" : "▼ "}{px(delta.abs, cur)} ({pc(delta.pct)}) from last change</span>
+                  ? <span className={delta.abs >= 0 ? "pos" : "neg"}><Icon name={delta.abs >= 0 ? "up" : "down"} size={12} /> {delta.abs >= 0 ? "+" : ""}{px(delta.abs, cur)} ({pc(delta.pct)}) from last change</span>
                   : <>per share · {["Base", "Bull", "Bear"][scen]} case DCF</>}
               </div>
             </div>
@@ -269,10 +277,12 @@ export default function ModelClient() {
             <span>{h.exchange || state.co?.exchange || "US-listed"} · {h.currency}</span>
             <span className="dot">·</span>
             <span>live price {px(h.price, cur)} via Financial Modeling Prep</span>
+            {stale && <span className="stale-badge" role="status">cached · provider briefly unavailable</span>}
             {!notMeaningful && (
               <button className={"prov-audit" + (audit ? " on" : "")} aria-pressed={audit}
                 onClick={() => { setAudit((a) => !a); setTraceKey(0); }}>
-                {audit ? "✓ Audit mode — click a KPI to trace it" : "Trace the math →"}
+                <Icon name={audit ? "check" : "audit"} size={13} />
+                {audit ? " Audit mode — click a KPI to trace it" : " Trace the math"}
               </button>
             )}
           </div>
@@ -280,7 +290,7 @@ export default function ModelClient() {
             <div className="trace-card" role="region" aria-label="Calculation trace">
               <div className="trace-head">
                 <span className="smallcaps">Audit — {traces[traceKey].title}</span>
-                <button className="wt-close" onClick={() => setAudit(false)} aria-label="Exit audit mode">✕</button>
+                <button className="wt-close" onClick={() => setAudit(false)} aria-label="Exit audit mode"><Icon name="x" size={15} /></button>
               </div>
               <table className="trace-tbl"><tbody>
                 {traces[traceKey].rows.map((r, i) => (
@@ -294,19 +304,28 @@ export default function ModelClient() {
             </div>
           )}
           <div className="tabbar">
-            <div className="tabbar-tabs" role="tablist" aria-label="Analyses">
+            <div className="tabbar-tabs" role="tablist" aria-label="Analyses"
+              onKeyDown={(e) => {
+                if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+                e.preventDefault();
+                const i = TABS.indexOf(tab);
+                const n = e.key === "ArrowRight" ? (i + 1) % TABS.length : (i - 1 + TABS.length) % TABS.length;
+                setTab(TABS[n]);
+                document.getElementById(`tab-${TABS[n]}`)?.focus();
+              }}>
               {TABS.map((t) => (
                 <button key={t} role="tab" id={`tab-${t}`} aria-selected={tab === t} aria-controls="model-tabpanel"
+                  tabIndex={tab === t ? 0 : -1}
                   className={tab === t ? "on" : ""} onClick={() => setTab(t)}>{t}</button>
               ))}
             </div>
             <div className="tabbar-actions">
               <button className="act" disabled={notMeaningful}
                 title={notMeaningful ? "Best on a profitable operating company — open Apple to try it" : "Learn how the three statements connect"}
-                onClick={() => setWalk(true)}>▶ Walkthrough</button>
-              <button className="act" onClick={exportXl}>{xlBusy ? "…" : "⬇ Excel"}</button>
-              <button className="act" onClick={share}>{copied ? "✓ Copied" : "↗ Share"}</button>
-              <button className="act" onClick={() => setWizard(true)}>↻ Wizard</button>
+                onClick={() => setWalk(true)}><Icon name="play" size={13} /> Walkthrough</button>
+              <button className="act" onClick={exportXl}><Icon name="download" size={13} /> {xlBusy ? "…" : "Excel"}</button>
+              <button className="act" onClick={share}><Icon name={copied ? "check" : "share"} size={13} /> {copied ? "Copied" : "Share"}</button>
+              <button className="act" onClick={() => setWizard(true)}><Icon name="refresh" size={13} /> Wizard</button>
             </div>
           </div>
           {!notMeaningful && (

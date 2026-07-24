@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { big } from "@/lib/format";
 import { useFocusTrap } from "@/components/useFocusTrap";
+import Icon from "@/components/Icon";
 
 /**
  * Beginner mode — animates how the income statement, cash flow and balance sheet
@@ -94,7 +95,7 @@ export default function Walkthrough({ state, R, cur = "$", onClose }) {
         transition={{ type: "spring", stiffness: 220, damping: 26 }}>
         <div className="wt-head">
           <div className="smallcaps" id="wt-heading">Beginner walkthrough</div>
-          <button className="wt-close" onClick={onClose} aria-label="Close">✕</button>
+          <button className="wt-close" onClick={onClose} aria-label="Close"><Icon name="x" size={15} /></button>
         </div>
 
         <div className="wt-stage">
@@ -105,7 +106,7 @@ export default function Walkthrough({ state, R, cur = "$", onClose }) {
             <Line id="ni" label="Net income" val={m(D.ni)} set={s.hi.is} />
           </Card>
 
-          <div className={"wt-arrow" + (s.flow === "is-cf" ? " on" : "")}>→</div>
+          <div className={"wt-arrow" + (s.flow === "is-cf" ? " on" : "")}><Icon name="arrowRight" size={18} /></div>
 
           <Card tag="Cash flow" title="Cash" glow={anyCF || i === 0}>
             <Line id="ni" label="Net income" val={m(D.ni)} set={s.hi.cf} />
@@ -114,7 +115,7 @@ export default function Walkthrough({ state, R, cur = "$", onClose }) {
             <Line id="cfo" label="= Cash generated" val={m(D.cfo)} set={s.hi.cf} />
           </Card>
 
-          <div className={"wt-arrow" + (s.flow === "cf-bs" ? " on" : "")}>→</div>
+          <div className={"wt-arrow" + (s.flow === "cf-bs" ? " on" : "")}><Icon name="arrowRight" size={18} /></div>
 
           <Card tag="Balance sheet" title="Balances" glow={anyBS || i === 0}>
             <Line id="cash" label="Cash" val={m(D.cash)} set={s.hi.bs} />

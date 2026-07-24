@@ -247,10 +247,13 @@ export default function ModelClient() {
               onClick={() => openTrace(0)} role={audit ? "button" : undefined} tabIndex={audit ? 0 : undefined}
               onKeyDown={(e) => { if (audit && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openTrace(0); } }}>
               <div className="smallcaps">{h.name} · intrinsic value</div>
-              <div className="val">{notMeaningful ? "n/m" : <AnimatedNumber value={d.perShare} format={(x) => px(x, cur)} />}</div>
+              <div className="val">{notMeaningful ? <abbr className="nm" title="Not meaningful — a standard DCF doesn't fit this company">n/m</abbr> :<AnimatedNumber value={d.perShare} format={(x) => px(x, cur)} />}</div>
               <div className="sub" aria-live="polite">
                 {delta && !notMeaningful
-                  ? <span className={delta.abs >= 0 ? "pos" : "neg"}><Icon name={delta.abs >= 0 ? "up" : "down"} size={12} /> {delta.abs >= 0 ? "+" : ""}{px(delta.abs, cur)} ({pc(delta.pct)}) from last change</span>
+                  ? <span className={delta.abs >= 0 ? "pos" : "neg"}>
+                      <Icon name={delta.abs >= 0 ? "up" : "down"} size={12} />
+                      {" "}{delta.abs >= 0 ? "+" : "−"}{px(Math.abs(delta.abs), cur)} ({delta.pct >= 0 ? "+" : "−"}{pc(Math.abs(delta.pct))}) from last change
+                    </span>
                   : <>per share · {["Base", "Bull", "Bear"][scen]} case DCF</>}
               </div>
             </div>
@@ -258,14 +261,14 @@ export default function ModelClient() {
               onClick={() => openTrace(1)} role={audit ? "button" : undefined} tabIndex={audit ? 0 : undefined}
               onKeyDown={(e) => { if (audit && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openTrace(1); } }}>
               <div className="smallcaps">vs. market price {px(h.price, cur)}</div>
-              <div className="val" style={{ color: notMeaningful ? "#cbbfae" : d.upside >= 0 ? "#a8d5b5" : "#e8a79b" }}>{notMeaningful ? "n/m" : <AnimatedNumber value={d.upside} format={(x) => pc(x)} />}</div>
+              <div className="val" style={{ color: notMeaningful ? "#cbbfae" : d.upside >= 0 ? "#a8d5b5" : "#e8a79b" }}>{notMeaningful ? <abbr className="nm" title="Not meaningful — a standard DCF doesn't fit this company">n/m</abbr> :<AnimatedNumber value={d.upside} format={(x) => pc(x)} />}</div>
               <div className="sub">{notMeaningful ? "model doesn't fit this company" : d.upside >= 0 ? "model says undervalued" : "model says overvalued"}</div>
             </div>
             <div className={"kpi" + (audit && traceKey === 2 && !notMeaningful ? " tracing" : "")}
               onClick={() => openTrace(2)} role={audit ? "button" : undefined} tabIndex={audit ? 0 : undefined}
               onKeyDown={(e) => { if (audit && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openTrace(2); } }}>
               <div className="smallcaps">Enterprise value</div>
-              <div className="val">{notMeaningful ? "n/m" : <>{cur}<AnimatedNumber value={d.ev} format={(x) => big(x)} /></>}</div>
+              <div className="val">{notMeaningful ? <abbr className="nm" title="Not meaningful — a standard DCF doesn't fit this company">n/m</abbr> :<>{cur}<AnimatedNumber value={d.ev} format={(x) => big(x)} /></>}</div>
               <div className="sub"><Term term="WACC" /> {pc(d.wacc, 2)} · TV {pc(d.tvPct, 0)} of value</div>
             </div>
           </div>

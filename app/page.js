@@ -94,12 +94,11 @@ export default function Home() {
         <div className="cine-labels">
           <span className="cl tl">(01) &nbsp;VALUATION STUDIO</span>
           <span className="cl tr">EST. 2026</span>
-          <span className="cl bl">NEW YORK · LONDON · REMOTE</span>
           <span className="cl br">SCROLL ↓</span>
         </div>
 
         <motion.div className="cine-inner" style={{ y: heroY, opacity: heroOp }}>
-          <div className="lp-eyebrow hin" style={{ animationDelay: "0.05s" }}>FINANCIAL MODELING · FOR EVERYONE</div>
+          <div className="lp-eyebrow hin" style={{ animationDelay: "0.05s" }}>FINANCIAL MODELING · BUILT FROM FILINGS</div>
           <h1 className="serif cine-h1">
             {["What is any company", "really worth?"].map((line, i) => (
               <span className="cine-line" key={i}>
@@ -179,7 +178,7 @@ export default function Home() {
       <section className="lp-band reveal">
         <div className="lp-band-inner">
           <div className="smallcaps center">Why I built this</div>
-          <h2 className="serif center lp-h2">Most people never learn to value a company.</h2>
+          <h2 className="serif center lp-h2">Valuation is learnable. Most people never get the chance.</h2>
           <div className="lp-cards3">
             <Tilt className="lp-card">
               <div className="lp-card-tag">It feels locked away</div>
@@ -194,7 +193,7 @@ export default function Home() {
               <p>It's easy to find a "fair value" figure somewhere. But if you can't see how it was built, you can't check it — and you don't learn a thing.</p>
             </Tilt>
           </div>
-          <p className="lp-turn">Vexa does it differently.</p>
+          <p className="lp-turn">Vexa takes a different approach.</p>
         </div>
       </section>
 
@@ -232,10 +231,10 @@ export default function Home() {
               </div>
             </Tilt>
             <ul className="lp-demo-list">
-              <li><b>It's honest about hype.</b> When a stock trades way above what its numbers support, Vexa tells you — and shows you what the market must be betting on to justify the price.</li>
+              <li><b>It flags stretched valuations.</b> When a share price runs well ahead of what the numbers support, Vexa shows what the market must assume to justify it.</li>
               <li><b>Seven kinds of analysis.</b> The 3-statement model, DCF, scenarios, sensitivity, capital raising, M&amp;A and LBO — the same ones used at investment banks.</li>
               <li><b>Notes on every screen.</b> Each chart and table has a short note explaining what it means and why it matters.</li>
-              <li><b>Everything updates live.</b> Change one assumption and the whole model recalculates on the spot.</li>
+              <li><b>Every output is linked.</b> Change one assumption and the full model recalculates.</li>
             </ul>
           </div>
           <div className="center"><Magnetic><button className="lp-cta" onClick={focusSearch}>Try it on a company →</button></Magnetic></div>
@@ -247,9 +246,9 @@ export default function Home() {
         <div className="lp-band-inner">
           <div className="smallcaps center">Who it's for</div>
           <div className="lp-who">
-            <div><b>Finance students</b><span>Turn what you learned in class into something you can actually do — and put on your CV.</span></div>
-            <div><b>Interview prep</b><span>Practise DCF and LBO questions on any real company, as many times as you want.</span></div>
-            <div><b>Curious investors</b><span>Work out whether a stock looks cheap or expensive, and see the reasoning for yourself.</span></div>
+            <div><b>Finance students</b><span>Apply classroom theory to real companies — and produce models worth showing.</span></div>
+            <div><b>Interview prep</b><span>Rehearse DCF and LBO questions on any listed company, as often as you need.</span></div>
+            <div><b>Curious investors</b><span>Assess whether a stock looks cheap or expensive, and follow the reasoning yourself.</span></div>
           </div>
           <div className="lp-feat-row">
             {["3-Statement", "DCF", "Scenarios", "Sensitivity", "Capital Raising", "M&A", "LBO"].map((f) => (
@@ -279,7 +278,7 @@ export default function Home() {
             </div>
             <div className="lp-qa">
               <div className="q">Where do the numbers come from?</div>
-              <div className="a">Straight from each company's official financial filings, through the Financial Modeling Prep data service. Nothing here is made up.</div>
+              <div className="a">Directly from each company's filings, via Financial Modeling Prep. No estimated or synthetic figures.</div>
             </div>
             <div className="lp-qa">
               <div className="q">Should I trade on this?</div>
@@ -287,7 +286,7 @@ export default function Home() {
             </div>
             <div className="lp-qa">
               <div className="q">Is it really free? Do I need an account?</div>
-              <div className="a">Yes, and no. Nothing to sign up for. Your models are saved in your own browser, not on a server.</div>
+              <div className="a">Free, and no account required. Models are stored locally in your browser, never on a server.</div>
             </div>
           </div>
         </div>
@@ -301,7 +300,7 @@ export default function Home() {
             <Logo size={26} />
             <div className="logo" style={{ fontSize: 18 }}>VE<span>XA</span></div>
           </div>
-          <p>A free tool for learning financial modeling. Not investment advice.</p>
+          <p>A free financial modeling tool for learning and analysis. Not investment advice.</p>
           <div className="lp-footer-links">
             <button onClick={focusSearch}>Start a model</button>
             <a href="https://github.com/faizan896/vexa" target="_blank" rel="noreferrer">View source</a>

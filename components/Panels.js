@@ -23,8 +23,10 @@ export function Overview({ state, R, cur, bad }) {
   const dir = d.upside >= 0 ? "below" : "above";
   const takeaway =
     gap < 0.1
-      ? `On the Base case, ${h.name} is trading roughly in line with what this model works out — about ${pc(Math.abs(d.upside), 0)} ${dir} fair value.`
-      : `On the Base case, ${h.name}'s price sits about ${pc(gap, 0)} ${dir} what this model works out. Whether that's a bargain, a warning, or the market seeing something the last three years don't, is the interesting part.`;
+      ? `On the Base case, ${h.name} trades roughly in line with this model's intrinsic value — about ${pc(Math.abs(d.upside), 0)} ${dir} it.`
+      : d.upside >= 0
+        ? `On the Base case, ${h.name} trades about ${pc(gap, 0)} below this model's intrinsic value. Either the market expects weaker performance than the last three years imply, or the shares are priced behind fundamentals.`
+        : `On the Base case, ${h.name} trades about ${pc(gap, 0)} above this model's intrinsic value. Either the market expects materially stronger growth than the last three years imply, or the shares are priced ahead of fundamentals.`;
   const co = state.co || {};
   const rev = R.reverse;
   return (
@@ -44,7 +46,7 @@ export function Overview({ state, R, cur, bad }) {
       )}
       {!bad && <div className="takeaway">{takeaway}</div>}
       {!bad && rev && (
-        <Card title="Reverse DCF — what the price assumes" right="the market's implied bet">
+        <Card title="Reverse DCF — what the price assumes" right="market-implied growth">
           <div className="rev-big">
             The current price implies revenue growing about{" "}
             <b className={rev.impliedGrowth >= (rev.histG ?? 0) ? "neg" : "pos"}>{pc(rev.impliedGrowth, 1)}</b> a year for the next five years.
@@ -105,7 +107,7 @@ export function Overview({ state, R, cur, bad }) {
               <tr><td>Bear / Bull per share</td><td>{bad ? "n/m" : `${px(br, cur)} / ${px(bl, cur)}`}</td></tr>
             </tbody>
           </table>
-          <Learn>If even the Bear case beats today's price, that's a margin of safety. If only Bull works, you're paying for perfection.</Learn>
+          <Learn>If even the Bear case clears today's price, you have a margin of safety. If only the Bull case does, the shares are priced for flawless execution.</Learn>
         </Card>
       </div>
       <Card title="Operating forecast" right="$ millions">
@@ -260,7 +262,7 @@ export function ScenariosPanel({ state, R, cur, scen, setScen }) {
   const names = ["Base", "Bull", "Bear"];
   return (
     <>
-      <Card title="Three futures, one model" right="full model re-run per case">
+      <Card title="Scenario comparison" right="full model re-run per case">
         <Learn>
           One number is a guess; three numbers are a view. The Bull–Bear spread IS your risk.
           Click a column header to make that case drive every other tab.
@@ -405,7 +407,7 @@ export function MaPanel({ state, R, cur }) {
             </tbody>
           </table>
         </Card>
-        <Card title="Accretion vs. premium paid" right="the cost of winning">
+        <Card title="Accretion vs. premium paid" right="premium paid">
           <PremiumBars premSens={x.premSens} />
           <Learn>
             Watch accretion die as the premium climbs — every extra 5% of "winning the deal" is paid by the
@@ -449,7 +451,7 @@ export function LboPanel({ state, R, cur }) {
             </tbody>
           </table>
         </Card>
-        <Card title="Debt melts, equity grows" right="the LBO engine">
+        <Card title="Debt paydown and equity build" right="the LBO engine">
           <DebtPaydown lbo={l} years={FYRS()} />
           <Learn>
             Every spare dollar "sweeps" to repay debt — each repaid dollar transfers value from lenders to the

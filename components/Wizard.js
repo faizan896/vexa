@@ -92,9 +92,9 @@ export default function Wizard({ state, setAsm, onDone, suggested }) {
       apply: () => {},
     },
     {
-      tag: "Step 4 of 4 — Forever",
+      tag: "Step 4 of 4 — Terminal value",
       title: "What happens after year 5?",
-      exp: "A company doesn't stop in 2030 — the 'terminal value' captures everything beyond. Keep terminal growth at or below long-run GDP (~2–3%), or the math quietly assumes the company outgrows the world economy.",
+      exp: "A company doesn't stop after year five — the terminal value captures everything beyond it. Keep terminal growth at or below long-run GDP (~2–3%); otherwise the model implies the company eventually outgrows the global economy.",
       body: (
         <>
           <div className="sliderline">

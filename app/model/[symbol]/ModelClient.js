@@ -173,7 +173,7 @@ export default function ModelClient() {
           ))}
         </div></section>
         <div className="sheet">
-          <div className="skel-note">Pulling {sym}'s real financials & building your model…</div>
+          <div className="skel-note">Loading {sym} filings and building the model…</div>
           <div className="card"><div className="skel skel-row" /><div className="skel skel-row" /><div className="skel skel-row" style={{ width: "70%" }} /></div>
           <div className="card"><div className="skel skel-row" /><div className="skel skel-row" style={{ width: "85%" }} /><div className="skel skel-row" style={{ width: "60%" }} /></div>
         </div>

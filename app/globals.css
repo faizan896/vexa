@@ -117,7 +117,9 @@ table.fin tr.section td { font-size: 10.5px; letter-spacing: 0.12em; text-transf
 
 /* ---------- controls ---------- */
 .controls-card label { display: block; margin: 14px 0 4px; }
-.controls-card input[type="number"], .controls-card input[type="text"] { width: 100%; border: none; border-bottom: 1px solid var(--ink); background: transparent; font: inherit; font-size: 15px; padding: 4px 2px; outline: none; }
+/* inputs don't inherit `color` — set it explicitly or they fall back to UA black
+   (invisible on the dark card). --ink flips with the theme, so this covers both. */
+.controls-card input[type="number"], .controls-card input[type="text"] { width: 100%; border: none; border-bottom: 1px solid var(--line); background: transparent; color: var(--ink); font: inherit; font-size: 15px; padding: 4px 2px; outline: none; }
 .controls-card input:focus { border-bottom: 2px solid var(--brown); }
 .scen-row { display: flex; gap: 8px; margin: 10px 0 4px; }
 .scen-row button { flex: 1; border: 1px solid var(--line); background: var(--paper); color: var(--ink); font: inherit; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 10px 0; cursor: pointer; }
@@ -613,6 +615,9 @@ html[data-theme="dark"] .amb-dot { background: rgba(230,196,143,0.3); }
 .stale-badge { background: rgba(176, 141, 63, 0.14); color: var(--accent); border: 1px solid var(--tan); border-radius: 999px; padding: 2px 9px; font-size: 10.5px; font-weight: 600; }
 .search-results.search-empty { padding: 14px 16px; font-size: 13px; color: var(--grey); line-height: 1.5; cursor: default; }
 .data-flags { font-size: 11px; color: var(--grey); font-style: italic; padding: 0 2px 2px; }
+/* chart legend labels default to the series colour — force theme ink so they stay
+   readable in dark mode (the coloured swatch still identifies the series) */
+.recharts-legend-item-text { color: var(--c-ink) !important; fill: var(--c-ink) !important; }
 
 /* ===== icon alignment inside buttons/labels ===== */
 .tabbar-actions .act, .site-nav button, .site-nav a, .wt-nav .btn { display: inline-flex; align-items: center; gap: 5px; }

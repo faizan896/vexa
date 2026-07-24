@@ -543,10 +543,13 @@ html[data-theme="dark"] .amb-dot { background: rgba(230,196,143,0.3); }
 .tabbar button, .search-results button { transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease; }
 
 /* ===== model tabbar: tabs vs actions ===== */
-/* single row at desktop widths — no hollow band under the tabs */
-.tabbar { align-items: center; justify-content: space-between; gap: 8px; flex-wrap: nowrap; }
-.tabbar-tabs { display: flex; flex-wrap: wrap; gap: 4px; min-width: 0; align-items: center; }
-.tabbar-actions { display: flex; gap: 4px; flex: 0 0 auto; padding-left: 10px; margin-left: auto; border-left: 1px solid var(--line); align-items: center; }
+/* tabs + actions share one row at desktop widths (tightened so they fit),
+   wrapping gracefully only on narrow screens */
+.tabbar { align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap; }
+.tabbar-tabs { display: flex; flex-wrap: wrap; gap: 2px; min-width: 0; align-items: center; }
+.tabbar-tabs button { padding: 8px 10px; }
+.tabbar-actions { display: flex; gap: 2px; flex: 0 0 auto; padding-left: 8px; margin-left: auto; border-left: 1px solid var(--line); align-items: center; }
+.tabbar-actions .act { padding: 8px 9px; }
 /* "n/m" carries its definition on hover/focus rather than relying on the banner */
 abbr.nm { text-decoration: none; border-bottom: 1px dotted currentColor; cursor: help; }
 .tabbar-actions .act { color: var(--tan); }

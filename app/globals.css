@@ -315,7 +315,7 @@ html[data-theme="dark"] .skel { background: linear-gradient(90deg, #2a2119 25%, 
 
 /* ================= CINEMATIC HERO ================= */
 .hero-photo { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
-.hero-photo-img { position: absolute; inset: 0; background: url(/hero.jpg) center 22% / cover no-repeat; transform: scale(1.02); animation: heroIn 1.4s cubic-bezier(.2,.7,.2,1) both; will-change: transform, opacity; }
+.hero-photo-img { position: absolute; inset: 0; background: url(/hero.jpg) center 22% / cover no-repeat; background-image: -webkit-image-set(url("/hero.webp") type("image/webp"), url("/hero.jpg") type("image/jpeg")); background-image: image-set(url("/hero.webp") type("image/webp"), url("/hero.jpg") type("image/jpeg")); transform: scale(1.02); animation: heroIn 1.4s cubic-bezier(.2,.7,.2,1) both; will-change: transform, opacity; }
 @keyframes heroIn { from { transform: scale(1.08); opacity: 0.4; } to { transform: scale(1.02); opacity: 1; } }
 .hero-photo-veil { position: absolute; inset: 0; background:
   radial-gradient(120% 75% at 50% 8%, rgba(58,38,25,0.08), transparent 55%),

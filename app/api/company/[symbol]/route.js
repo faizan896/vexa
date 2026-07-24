@@ -17,8 +17,10 @@ export async function GET(req, { params }) {
   const key = process.env.FMP_API_KEY;
   if (!key) return NextResponse.json({ error: "Server missing FMP_API_KEY" }, { status: 500 });
 
-  const get = async (path) => {
-    const r = await fetch(`${BASE}/${path}${path.includes("?") ? "&" : "?"}apikey=${key}`, { next: { revalidate: 3600 } });
+  // Cache aggressively to conserve the FMP quota: financial statements change only
+  // a few times a year, so cache them 24h; the profile (which carries the price) 1h.
+  const get = async (path, revalidate = 86400) => {
+    const r = await fetch(`${BASE}/${path}${path.includes("?") ? "&" : "?"}apikey=${key}`, { next: { revalidate } });
     if (r.status === 402 || r.status === 403) throw { code: "PLAN" };
     if (r.status === 429 || r.status >= 500) throw { code: "UPSTREAM", status: r.status }; // rate-limit / outage on the data provider
     if (!r.ok) throw { code: "HTTP", status: r.status };
@@ -27,7 +29,7 @@ export async function GET(req, { params }) {
 
   try {
     const [profileArr, income, balance, cashflow] = await Promise.all([
-      get(`profile?symbol=${symbol}`),
+      get(`profile?symbol=${symbol}`, 3600), // price — keep ~1h fresh
       get(`income-statement?symbol=${symbol}&limit=3`),
       get(`balance-sheet-statement?symbol=${symbol}&limit=3`),
       get(`cash-flow-statement?symbol=${symbol}&limit=3`),

@@ -23,8 +23,8 @@ export async function GET(req) {
   if (!key) return NextResponse.json({ error: "Server missing FMP_API_KEY" }, { status: 500 });
   try {
     const [bySym, byName] = await Promise.all([
-      fetch(`${BASE}/search-symbol?query=${encodeURIComponent(q)}&limit=20&apikey=${key}`, { next: { revalidate: 3600 } }).then((r) => (r.ok ? r.json() : [])),
-      fetch(`${BASE}/search-name?query=${encodeURIComponent(q)}&limit=20&apikey=${key}`, { next: { revalidate: 3600 } }).then((r) => (r.ok ? r.json() : [])),
+      fetch(`${BASE}/search-symbol?query=${encodeURIComponent(q)}&limit=20&apikey=${key}`, { next: { revalidate: 86400 } }).then((r) => (r.ok ? r.json() : [])),
+      fetch(`${BASE}/search-name?query=${encodeURIComponent(q)}&limit=20&apikey=${key}`, { next: { revalidate: 86400 } }).then((r) => (r.ok ? r.json() : [])),
     ]);
     const seen = new Set();
     const all = [...(Array.isArray(bySym) ? bySym : []), ...(Array.isArray(byName) ? byName : [])].filter((r) => {

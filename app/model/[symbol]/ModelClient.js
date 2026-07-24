@@ -286,6 +286,9 @@ export default function ModelClient() {
               </button>
             )}
           </div>
+          {state.co?.flags?.length > 0 && (
+            <div className="data-flags">Data note: {state.co.flags.join(" ")}</div>
+          )}
           {audit && !notMeaningful && (
             <div className="trace-card" role="region" aria-label="Calculation trace">
               <div className="trace-head">

@@ -612,6 +612,7 @@ html[data-theme="dark"] .amb-dot { background: rgba(230,196,143,0.3); }
 .provenance .dot { opacity: 0.5; }
 .stale-badge { background: rgba(176, 141, 63, 0.14); color: var(--accent); border: 1px solid var(--tan); border-radius: 999px; padding: 2px 9px; font-size: 10.5px; font-weight: 600; }
 .search-results.search-empty { padding: 14px 16px; font-size: 13px; color: var(--grey); line-height: 1.5; cursor: default; }
+.data-flags { font-size: 11px; color: var(--grey); font-style: italic; padding: 0 2px 2px; }
 
 /* ===== icon alignment inside buttons/labels ===== */
 .tabbar-actions .act, .site-nav button, .site-nav a, .wt-nav .btn { display: inline-flex; align-items: center; gap: 5px; }

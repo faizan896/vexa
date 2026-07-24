@@ -1,4 +1,4 @@
-const BASE = "https://vexa-fazis-projects-f96b2d55.vercel.app";
+const BASE = "https://hivexa.vercel.app";
 
 export default function robots() {
   return {

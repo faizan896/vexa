@@ -2,7 +2,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 
 export const metadata = {
-  metadataBase: new URL("https://vexa-fazis-projects-f96b2d55.vercel.app"),
+  metadataBase: new URL("https://hivexa.vercel.app"),
   title: "Vexa — Financial modeling for everyone",
   description:
     "A free tool for learning financial modeling. Type any company and build a full valuation — 3-statement model, DCF, scenarios, sensitivity, capital raising, M&A and LBO — with each step explained.",

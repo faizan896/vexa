@@ -1,4 +1,4 @@
-const BASE = "https://vexa-fazis-projects-f96b2d55.vercel.app";
+const BASE = "https://hivexa.vercel.app";
 const POPULAR = ["AAPL", "MSFT", "TSLA", "NVDA", "AMZN", "GOOGL", "META", "KO", "NKE", "DIS", "V", "COST"];
 
 export default function sitemap() {

@@ -272,22 +272,17 @@ export default function Home() {
 
           <div className="smallcaps center" style={{ marginTop: 40 }}>Common questions</div>
           <div className="lp-faq">
-            <div className="lp-qa">
-              <div className="q">Which companies work?</div>
-              <div className="a">Most large US-listed companies — Apple, Microsoft, Tesla, Coca-Cola and so on. Some smaller or non-US names aren't covered yet; if one doesn't load, try its US ticker.</div>
-            </div>
-            <div className="lp-qa">
-              <div className="q">Where do the numbers come from?</div>
-              <div className="a">Directly from each company's filings, via Financial Modeling Prep. No estimated or synthetic figures.</div>
-            </div>
-            <div className="lp-qa">
-              <div className="q">Should I trade on this?</div>
-              <div className="a">No. Vexa is for learning how valuation works. A model is only as good as its assumptions, and every stock deserves real research before you risk money.</div>
-            </div>
-            <div className="lp-qa">
-              <div className="q">Is it really free? Do I need an account?</div>
-              <div className="a">Free, and no account required. Models are stored locally in your browser, never on a server.</div>
-            </div>
+            {[
+              ["Which companies work?", "Most large US-listed companies — Apple, Microsoft, Tesla, Coca-Cola and so on. Some smaller or non-US names aren't covered yet; if one doesn't load, try its US ticker."],
+              ["Where do the numbers come from?", "Directly from each company's filings, via Financial Modeling Prep. No estimated or synthetic figures."],
+              ["Should I trade on this?", "No. Vexa is for learning how valuation works. A model is only as good as its assumptions, and every stock deserves real research before you risk money."],
+              ["Is it really free? Do I need an account?", "Free, and no account required. Models are stored locally in your browser, never on a server."],
+            ].map(([q, a]) => (
+              <details className="lp-qa" key={q}>
+                <summary className="q">{q}<span className="qa-mark" aria-hidden="true" /></summary>
+                <div className="a">{a}</div>
+              </details>
+            ))}
           </div>
         </div>
       </section>

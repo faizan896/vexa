@@ -387,8 +387,7 @@ html[data-theme="dark"] .skel { background: linear-gradient(90deg, #2a2119 25%, 
   .cine-header { padding: 14px 16px; gap: 10px; }
   /* the hero nav wraps on narrow phones; the decorative corner labels then collide
      with it and with the eyebrow — they're ornamental, so drop them on mobile */
-  .cine-labels .tl, .cine-labels .tr, .cine-labels .bl { display: none; }
-  .cine-labels .br { font-size: 9px; }
+  .cine-labels { display: none; }   /* incl. "SCROLL ↓", which collided with the CTA link */
   .cine-header .site-nav { gap: 6px 12px; font-size: 9.5px; letter-spacing: 0.08em; }
   /* keep the centred hero content clear of the (possibly wrapped) header */
   .cine-inner { padding-top: 64px; }

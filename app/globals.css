@@ -643,6 +643,19 @@ abbr.nm { text-decoration: none; border-bottom: 1px dotted currentColor; cursor:
 .provenance { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 11.5px; color: var(--grey); padding: 0 2px 2px; }
 .provenance .dot { opacity: 0.5; }
 .stale-badge { background: rgba(176, 141, 63, 0.14); color: var(--accent); border: 1px solid var(--tan); border-radius: 999px; padding: 2px 9px; font-size: 10.5px; font-weight: 600; }
+
+/* Simple / Advanced depth switch */
+.mode-switch { display: inline-flex; margin-left: auto; border: 1px solid var(--line); border-radius: 999px; padding: 2px; gap: 2px; background: var(--paper); }
+.mode-switch button {
+  background: none; border: none; font: inherit; font-size: 11px; letter-spacing: 0.04em;
+  padding: 3px 12px; border-radius: 999px; cursor: pointer; color: var(--grey); transition: background 0.2s ease, color 0.2s ease;
+}
+.mode-switch button:hover { color: var(--ink); }
+.mode-switch button.on { background: var(--brown); color: #f5efe6; font-weight: 600; }
+html[data-theme="dark"] .mode-switch { background: #201913; }
+html[data-theme="dark"] .mode-switch button.on { background: var(--navy); color: #1a120c; }
+/* when the switch is present the audit button no longer needs the auto margin */
+.provenance .mode-switch ~ .prov-audit { margin-left: 0; }
 .search-results.search-empty { padding: 14px 16px; font-size: 13px; color: var(--grey); line-height: 1.5; cursor: default; }
 .data-flags { font-size: 11px; color: var(--grey); font-style: italic; padding: 0 2px 2px; }
 /* chart legend labels default to the series colour — force theme ink so they stay

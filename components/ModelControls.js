@@ -26,7 +26,7 @@ function Num({ label, value, onChange, step = 1, pctv }) {
 }
 
 /** Right-rail "Model Controls" — scenario buttons + the key levers, grouped. */
-export default function ModelControls({ state, setAsm, scen, setScen, learnOn, setLearnOn }) {
+export default function ModelControls({ state, setAsm, scen, setScen, learnOn, setLearnOn, advanced = true }) {
   const a = state.asm;
   const upd = (patch) => setAsm({ ...a, ...patch });
   const updScen = (key, v) => {
@@ -48,12 +48,17 @@ export default function ModelControls({ state, setAsm, scen, setScen, learnOn, s
       <Num label="Beta" value={a.beta} step={0.05} onChange={(v) => upd({ beta: v })} />
       <Num label="Terminal growth (%)" pctv value={a.tg} step={0.25} onChange={(v) => upd({ tg: v })} />
       <Num label="Exit EV/EBITDA (x)" value={a.exitMult} step={0.5} onChange={(v) => upd({ exitMult: v })} />
-      <div className="smallcaps" style={{ marginTop: 18 }}>Deals</div>
-      <Num label="M&A offer premium (%)" pctv value={a.prem} step={1} onChange={(v) => upd({ prem: v })} />
-      <Num label="M&A % paid in stock" pctv value={a.pctStock} step={5} onChange={(v) => upd({ pctStock: v })} />
-      <Num label="LBO entry multiple (x)" value={a.lboEntry} step={0.5} onChange={(v) => upd({ lboEntry: v })} />
-      <Num label="LBO leverage (x EBITDA)" value={a.lboLev} step={0.5} onChange={(v) => upd({ lboLev: v })} />
-      <Num label="Capital raise amount ($M)" value={a.raiseAmt} step={100} onChange={(v) => upd({ raiseAmt: v })} />
+      {/* deal levers only matter when the M&A / LBO / capital-raising tabs are visible */}
+      {advanced && (
+        <>
+          <div className="smallcaps" style={{ marginTop: 18 }}>Deals</div>
+          <Num label="M&A offer premium (%)" pctv value={a.prem} step={1} onChange={(v) => upd({ prem: v })} />
+          <Num label="M&A % paid in stock" pctv value={a.pctStock} step={5} onChange={(v) => upd({ pctStock: v })} />
+          <Num label="LBO entry multiple (x)" value={a.lboEntry} step={0.5} onChange={(v) => upd({ lboEntry: v })} />
+          <Num label="LBO leverage (x EBITDA)" value={a.lboLev} step={0.5} onChange={(v) => upd({ lboLev: v })} />
+          <Num label="Capital raise amount ($M)" value={a.raiseAmt} step={100} onChange={(v) => upd({ raiseAmt: v })} />
+        </>
+      )}
       <button className="btn ghost" onClick={() => setLearnOn(!learnOn)}>
         {learnOn ? "Hide" : "Show"} learning notes
       </button>

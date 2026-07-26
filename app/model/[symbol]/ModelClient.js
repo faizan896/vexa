@@ -16,7 +16,10 @@ import Icon from "@/components/Icon";
 import { exportModelXlsx } from "@/lib/exportXlsx";
 import { Overview, ThreeStatement, DcfPanel, ScenariosPanel, SensitivityPanel, CapPanel, MaPanel, LboPanel } from "@/components/Panels";
 
-const TABS = ["Overview", "3-Statement", "DCF", "Scenarios", "Sensitivity", "Capital Raising", "M&A", "LBO"];
+// Simple mode shows just the valuation story; Advanced reveals the full suite.
+// Users told us the full set is a lot to take in at once — this hides depth, doesn't remove it.
+const SIMPLE_TABS = ["Overview", "DCF"];
+const ALL_TABS = ["Overview", "3-Statement", "DCF", "Scenarios", "Sensitivity", "Capital Raising", "M&A", "LBO"];
 
 function encodeShare(asm, scen) {
   const keep = { g: asm.growth, gm: asm.gm, sg: asm.sgaPct, b: asm.beta, tg: asm.tg, xm: asm.exitMult, pr: asm.prem, ps: asm.pctStock, le: asm.lboEntry, ll: asm.lboLev, ra: asm.raiseAmt, sc: scen };
@@ -64,7 +67,19 @@ export default function ModelClient() {
   const [traceKey, setTraceKey] = useState(0);
   const [reload, setReload] = useState(0);
   const [stale, setStale] = useState(false);
+  const [advanced, setAdvanced] = useState(false);
   const xlBusyRef = useRef(false);
+
+  // remember the user's chosen depth across visits
+  useEffect(() => {
+    try { if (localStorage.getItem("vexa_mode") === "advanced") setAdvanced(true); } catch {}
+  }, []);
+  const setMode = (adv) => {
+    setAdvanced(adv);
+    try { localStorage.setItem("vexa_mode", adv ? "advanced" : "simple"); } catch {}
+    if (!adv && !SIMPLE_TABS.includes(tab)) setTab("Overview");
+  };
+  const TABS = advanced ? ALL_TABS : SIMPLE_TABS;
 
   const exportXl = async () => {
     if (!state || !R || xlBusyRef.current) return;
@@ -281,6 +296,12 @@ export default function ModelClient() {
             <span className="dot">·</span>
             <span>live price {px(h.price, cur)} via Financial Modeling Prep</span>
             {stale && <span className="stale-badge" role="status">cached · provider briefly unavailable</span>}
+            <div className="mode-switch" role="group" aria-label="Detail level">
+              <button className={advanced ? "" : "on"} aria-pressed={!advanced} onClick={() => setMode(false)}
+                title="Just the valuation — company overview and DCF">Simple</button>
+              <button className={advanced ? "on" : ""} aria-pressed={advanced} onClick={() => setMode(true)}
+                title="Everything — 3-statement, scenarios, sensitivity, capital raising, M&amp;A and LBO">Advanced</button>
+            </div>
             {!notMeaningful && (
               <button className={"prov-audit" + (audit ? " on" : "")} aria-pressed={audit}
                 onClick={() => { setAudit((a) => !a); setTraceKey(0); }}>
@@ -370,6 +391,7 @@ export default function ModelClient() {
             </div>
             <ModelControls
               state={state} scen={scen} setScen={setScen} learnOn={learnOn} setLearnOn={setLearnOn}
+              advanced={advanced}
               setAsm={(asm) => setState({ ...state, asm })}
             />
           </div>

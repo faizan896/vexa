@@ -382,7 +382,17 @@ html[data-theme="dark"] .skel { background: linear-gradient(90deg, #2a2119 25%, 
 .cine-inner .chips button:hover { background: rgba(255,255,255,0.16); border-color: #e6c48f; }
 .cine-inner .lp-example { color: #d8c3a3; }
 .cine-inner .lp-example:hover { color: #fff; }
-@media (max-width: 640px) { .cine-h1 { font-size: 40px; } .cine-labels .cl { font-size: 9px; } .cine-header { padding: 14px 18px; } }
+@media (max-width: 640px) {
+  .cine-h1 { font-size: 40px; }
+  .cine-header { padding: 14px 16px; gap: 10px; }
+  /* the hero nav wraps on narrow phones; the decorative corner labels then collide
+     with it and with the eyebrow — they're ornamental, so drop them on mobile */
+  .cine-labels .tl, .cine-labels .tr, .cine-labels .bl { display: none; }
+  .cine-labels .br { font-size: 9px; }
+  .cine-header .site-nav { gap: 6px 12px; font-size: 9.5px; letter-spacing: 0.08em; }
+  /* keep the centred hero content clear of the (possibly wrapped) header */
+  .cine-inner { padding-top: 64px; }
+}
 
 /* the cream sheet that rises over the fixed hero */
 .sheet-wrap { position: relative; z-index: 2; background: var(--cream); border-radius: 26px 26px 0 0; margin-top: -32px; box-shadow: 0 -26px 70px rgba(18,11,6,0.5); overflow: hidden; }

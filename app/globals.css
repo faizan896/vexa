@@ -649,6 +649,10 @@ abbr.nm { text-decoration: none; border-bottom: 1px dotted currentColor; cursor:
   .mode-switch { margin-left: 0; }
   .provenance { gap: 6px 10px; }
   .controls-card input[type="number"], .controls-card input[type="text"] { min-height: 40px; }
+  /* four action buttons don't fit one row on a narrow phone — let them wrap */
+  .tabbar-actions { flex-wrap: wrap; }
+  /* glossary tooltip must never push the page wider than the screen */
+  .term-pop { width: auto; max-width: min(260px, calc(100vw - 36px)); }
 }
 
 /* ===== data provenance line ===== */

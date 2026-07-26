@@ -637,6 +637,16 @@ abbr.nm { text-decoration: none; border-bottom: 1px dotted currentColor; cursor:
   /* WCAG touch-target minimum */
   .tabbar button, .tabbar-actions .act, .chips button, .site-nav button, .site-nav a { min-height: 42px; }
   .chips button { display: inline-flex; align-items: center; }
+  /* the model-page nav (5 items) is wider than a phone — let it wrap to its own row
+     instead of forcing horizontal page scroll */
+  .site-header .inner { flex-wrap: wrap; gap: 8px 16px; padding: 10px 14px; }
+  .site-header .inner .logo-wrap { flex: 0 0 auto; }
+  .site-nav { width: 100%; margin-left: 0; flex-wrap: wrap; gap: 4px 16px; font-size: 10px; }
+  /* secondary controls also need a comfortable tap height */
+  .mode-switch button, .provenance .prov-audit { min-height: 38px; display: inline-flex; align-items: center; }
+  .mode-switch { margin-left: 0; }
+  .provenance { gap: 6px 10px; }
+  .controls-card input[type="number"], .controls-card input[type="text"] { min-height: 40px; }
 }
 
 /* ===== data provenance line ===== */

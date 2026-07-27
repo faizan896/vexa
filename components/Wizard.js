@@ -19,13 +19,19 @@ export default function Wizard({ state, setAsm, onDone, suggested }) {
 
   const steps = [
     {
-      tag: "Welcome",
+      tag: "Before you start",
       title: `${state.hist.name}'s financials are loaded`,
-      exp: `That's three years of revenue, profits, balance sheet and cash flow, straight from the company's filings. Next you'll answer four short questions about how you think the business will do. Each already has an answer filled in, so you can just tweak what you disagree with.`,
+      exp: `Three years of revenue, profits, balance sheet and cash flow — straight from the filings. Those are facts, and they're already in. What no filing can tell you is what happens next, and that is what actually decides the value.`,
       body: (
         <div className="suggest" style={{ lineHeight: 1.7 }}>
-          Last year's revenue: <b>{Math.round(state.hist.rev[state.hist.rev.length - 1]).toLocaleString()}M {state.hist.currency}</b>
-          <br />You can change anything later, and there are notes along the way if a term is new. Not sure? Just hit Skip and use the defaults.
+          <b>Why the next four questions matter:</b> a company is worth the cash it will earn from here.
+          So Vexa asks your view on four things — growth, profitability, risk, and the long run — then
+          projects five years from your answers and discounts them back to a value per share.
+          <br /><br />
+          Those four answers <b>are</b> the model. Change one and every number on the next screen changes with it.
+          <br /><br />
+          Each comes pre-filled from {state.hist.name}&apos;s own history, so you can tweak only what you disagree with —
+          or hit Skip to accept all of them and look around first.
         </div>
       ),
       apply: () => {},

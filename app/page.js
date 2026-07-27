@@ -107,8 +107,9 @@ export default function Home() {
             ))}
           </h1>
           <p className="cine-sub hin" style={{ animationDelay: "0.72s" }}>
-            Type a ticker and Vexa loads the company's real financials, then helps you build
-            a full valuation — DCF, scenarios, M&amp;A, LBO. It's free, and it explains each step.
+            Type a company name. Vexa pulls its real financials, asks you four questions,
+            and works out what the business is actually worth per share — then shows you
+            exactly how it got there. Free, and it explains every step.
           </p>
           <div className="searchbox lp-search hin" style={{ animationDelay: "0.86s" }}>
             <input

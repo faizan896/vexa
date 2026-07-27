@@ -664,6 +664,41 @@ abbr.nm { text-decoration: none; border-bottom: 1px dotted currentColor; cursor:
   .term-pop { width: auto; max-width: min(260px, calc(100vw - 36px)); }
 }
 
+/* ===== mobile pinned KPI bar ===== */
+.kpi-sticky { display: none; }
+@media (max-width: 900px) {
+  .kpi-sticky {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 45;
+    padding: 8px max(14px, env(safe-area-inset-left)) 8px max(14px, env(safe-area-inset-right));
+    background: var(--brown); color: #f5efe6;
+    box-shadow: 0 2px 14px rgba(18, 11, 6, 0.3);
+    transform: translateY(-100%); transition: transform 0.28s cubic-bezier(.2,.7,.2,1);
+    pointer-events: none;
+  }
+  .kpi-sticky.show { transform: translateY(0); pointer-events: auto; }
+  .ks-left { display: flex; align-items: baseline; gap: 9px; min-width: 0; }
+  .ks-sym { font-size: 10.5px; letter-spacing: 0.12em; color: #b7a894; font-weight: 600; }
+  .ks-val { font-family: var(--serif); font-size: 19px; font-weight: var(--display-weight); letter-spacing: var(--display-tracking); font-variant-numeric: tabular-nums lining-nums; }
+  .ks-up { font-size: 12.5px; font-weight: 600; }
+  .kpi-sticky .ks-up.pos { color: #a8d5b5; }
+  .kpi-sticky .ks-up.neg { color: #e8a79b; }
+  .ks-jump { flex: none; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22); color: #f3e8d6; font: inherit; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding: 7px 12px; border-radius: 999px; cursor: pointer; min-height: 36px; }
+  .ks-jump:active { background: rgba(255,255,255,0.2); }
+  /* keep anchored scrolls clear of the pinned bar */
+  .controls-card, .tabbar { scroll-margin-top: 62px; }
+  .controls-card input { scroll-margin-top: 90px; }
+}
+@media (prefers-reduced-motion: reduce) { .kpi-sticky { transition: none; } }
+
+/* short/landscape phones: let the hero size to content instead of a full viewport */
+@media (max-height: 480px) and (orientation: landscape) {
+  .cine-hero { height: auto; min-height: 0; padding: 92px 0 44px; }
+  .cine-h1 { font-size: 34px; }
+  .cine-inner { padding-top: 0; }
+  .cine-labels { display: none; }
+}
+
 /* ===== data provenance line ===== */
 .provenance { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 11.5px; color: var(--grey); padding: 0 2px 2px; }
 .provenance .dot { opacity: 0.5; }

@@ -10,6 +10,13 @@ const slug = (s) => "ctrl-" + s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replac
  */
 function Num({ label, value, onChange, step = 1, pctv }) {
   const id = slug(label);
+  // On phones the on-screen keyboard can cover the field being edited. Pulling the
+  // input toward the middle of the viewport on focus keeps it visible above it.
+  const keepVisible = (e) => {
+    if (typeof window === "undefined" || window.innerWidth > 760) return;
+    const el = e.target;
+    setTimeout(() => { try { el.scrollIntoView({ block: "center", behavior: "smooth" }); } catch {} }, 250);
+  };
   return (
     <>
       <label className="smallcaps" htmlFor={id}>{label}</label>
@@ -18,6 +25,7 @@ function Num({ label, value, onChange, step = 1, pctv }) {
         type="number"
         inputMode="decimal"
         step={step}
+        onFocus={keepVisible}
         value={pctv ? +(value * 100).toFixed(2) : +(+value).toFixed(2)}
         onChange={(e) => onChange(pctv ? (+e.target.value || 0) / 100 : +e.target.value || 0)}
       />

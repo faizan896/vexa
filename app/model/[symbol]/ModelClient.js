@@ -69,7 +69,18 @@ export default function ModelClient() {
   const [stale, setStale] = useState(false);
   const [advanced, setAdvanced] = useState(false);
   const [baseline, setBaseline] = useState(null);
+  const [heroGone, setHeroGone] = useState(false);
   const xlBusyRef = useRef(false);
+
+  // mobile: once the hero scrolls away, keep the headline value pinned to the top
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hero = document.querySelector(".hero");
+    if (!hero || !("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver(([e]) => setHeroGone(!e.isIntersecting), { threshold: 0 });
+    io.observe(hero);
+    return () => io.disconnect();
+  }, [state]);
 
   // remember the user's chosen depth across visits
   useEffect(() => {
@@ -260,6 +271,21 @@ export default function ModelClient() {
   return (
     <Shell>
       <h1 className="sr-only">{h.name} ({h.symbol}) — Vexa valuation</h1>
+      {/* mobile-only pinned summary: keeps the answer visible while scrolling the tabs,
+          and gives a one-tap route to the assumptions (which sit below the content on phones) */}
+      <div className={"kpi-sticky" + (heroGone ? " show" : "")} aria-hidden={!heroGone}>
+        <div className="ks-left">
+          <span className="ks-sym">{h.symbol}</span>
+          <span className="ks-val">{notMeaningful ? "n/m" : px(d.perShare, cur)}</span>
+          {!notMeaningful && (
+            <span className={"ks-up " + (d.upside >= 0 ? "pos" : "neg")}>{d.upside >= 0 ? "+" : ""}{pc(d.upside)}</span>
+          )}
+        </div>
+        <button className="ks-jump" onClick={() => {
+          const el = document.querySelector(".controls-card");
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }}>Assumptions</button>
+      </div>
       <div className={learnOn ? "" : "hide-learn"}>
         {wizard && (
           <Wizard state={state} setAsm={(asm) => setState({ ...state, asm })} suggested={suggested} onDone={() => setWizard(false)} />

@@ -41,7 +41,11 @@ export default function Wizard({ state, setAsm, onDone, suggested }) {
               onChange={(e) => updScen("growth", 0, +e.target.value / 100)} />
             <div className="bigval serif">{pc(a.growth[0])}</div>
           </div>
-          <div className="suggest">Suggested (3-yr history): <b>{pc(suggested.cagr)}</b> · Bull and Bear are set ±3pp around your Base automatically — you can fine-tune them later in Model Controls.</div>
+          <div className="suggest">
+            From the filings (3-yr history): <b>{pc(suggested.cagr)}</b>
+            {Math.abs(a.growth[0] - suggested.cagr) > 0.0005 && <> · you&apos;ve set <b>{pc(a.growth[0])}</b></>}
+            {" "}· Bull and Bear are set ±3pp around your Base automatically — you can fine-tune them later in Model Controls.
+          </div>
         </>
       ),
       apply: () => {
@@ -66,7 +70,7 @@ export default function Wizard({ state, setAsm, onDone, suggested }) {
               onChange={(e) => updScen("sgaPct", 0, +e.target.value / 100)} />
             <div className="bigval serif">{pc(a.sgaPct[0])}</div>
           </div>
-          <div className="suggest">Last actuals: gross margin <b>{pc(suggested.gm)}</b>, operating costs <b>{pc(suggested.sga)}</b>. Operating margin implied: <b>{pc(a.gm[0] - a.sgaPct[0])}</b>.</div>
+          <div className="suggest">From the filings (last actuals): gross margin <b>{pc(suggested.gm)}</b>, operating costs <b>{pc(suggested.sga)}</b>. Operating margin implied by your inputs: <b>{pc(a.gm[0] - a.sgaPct[0])}</b>.</div>
         </>
       ),
       apply: () => {},

@@ -238,8 +238,8 @@ html[data-theme="dark"] .skel { background: linear-gradient(90deg, #2a2119 25%, 
 .lp-band.alt { background: var(--band-alt); }
 .lp-band-inner { max-width: 1000px; margin: 0 auto; }
 .center { text-align: center; }
-.lp-h2 { font-size: 30px; font-weight: var(--heading-weight); margin: 8px 0 30px; letter-spacing: var(--display-tracking); }
-@media (max-width: 640px) { .lp-h2 { font-size: 23px; } .lp-band { padding: 44px 18px; } }
+.lp-h2 { font-size: 38px; font-weight: var(--heading-weight); margin: 10px 0 34px; letter-spacing: var(--display-tracking); line-height: 1.14; }
+@media (max-width: 640px) { .lp-h2 { font-size: 27px; } .lp-band { padding: 44px 18px; } }
 
 .lp-cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .lp-card { background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 20px; }

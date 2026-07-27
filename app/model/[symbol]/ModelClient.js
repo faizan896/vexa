@@ -68,6 +68,7 @@ export default function ModelClient() {
   const [reload, setReload] = useState(0);
   const [stale, setStale] = useState(false);
   const [advanced, setAdvanced] = useState(false);
+  const [baseline, setBaseline] = useState(null);
   const xlBusyRef = useRef(false);
 
   // remember the user's chosen depth across visits
@@ -105,6 +106,10 @@ export default function ModelClient() {
         if (!r.ok) return setError(j.error || "Could not load data.");
         setStale(!!j.stale);
         const st = deriveState(j);
+        // Snapshot the values derived straight from the filings, BEFORE any shared link,
+        // saved model or slider can change them. These are historical facts and must stay
+        // fixed — otherwise the "3-yr history" reference moves with the user's own input.
+        setBaseline({ cagr: st.asm.growth[0], gm: st.asm.gm[0], sga: st.asm.sgaPct[0], beta: st.asm.beta });
         // 1) shared link takes priority, 2) then saved, 3) else wizard
         const shared = decodeShare();
         if (shared) {
@@ -198,7 +203,11 @@ export default function ModelClient() {
   const d = R.base.dcf, h = state.hist;
   const notMeaningful = !(d.ev > 0 && d.perShare > 0 && d.wacc > 0) || /bank|insurance/i.test(state.co?.industry || "");
   const suggested = {
-    cagr: state.asm.growth[0], gm: state.asm.gm[0], sga: state.asm.sgaPct[0], beta: state.asm.beta,
+    // read from the filing-derived snapshot, not the live (user-editable) assumptions
+    cagr: baseline ? baseline.cagr : state.asm.growth[0],
+    gm: baseline ? baseline.gm : state.asm.gm[0],
+    sga: baseline ? baseline.sga : state.asm.sgaPct[0],
+    beta: baseline ? baseline.beta : state.asm.beta,
     waccOf: (b) => {
       const ke = state.asm.rf + b * state.asm.erp, kdAT = state.asm.kd * (1 - state.asm.taxRate);
       const E = h.shares[h.shares.length - 1] * h.price, D = h.debt[h.debt.length - 1];

@@ -466,7 +466,9 @@ export function LboPanel({ state, R, cur }) {
             <tbody>
               {[["EBITDA", l.yrs.map((y) => y.ebitda)], ["− Interest", l.yrs.map((y) => -y.int_)],
                 ["Net income", l.yrs.map((y) => y.ni)], ["FCF for paydown", l.yrs.map((y) => y.fcf), true],
-                ["Beginning debt", l.yrs.map((y) => y.beg)], ["Ending debt", l.yrs.map((y) => y.end), true]].map(([lb, vals, b]) => (
+                ["Beginning debt", l.yrs.map((y) => y.beg)],
+                ...(l.yrs.some((y) => y.draw > 0) ? [["+ Revolver draw", l.yrs.map((y) => y.draw)]] : []),
+                ["Ending debt", l.yrs.map((y) => y.end), true]].map(([lb, vals, b]) => (
                 <tr key={lb} className={b ? "bold" : ""}><td>{lb}</td>{vals.map((v, i) => <td key={i}>{f0(v)}</td>)}</tr>
               ))}
             </tbody>

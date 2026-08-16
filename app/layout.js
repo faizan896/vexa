@@ -1,5 +1,7 @@
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import SmoothScroll from "@/components/SmoothScroll";
+import Visitor from "@/components/Visitor";
 
 export const metadata = {
   metadataBase: new URL("https://hivexa.vercel.app"),
@@ -36,6 +38,8 @@ export default function RootLayout({ children }) {
       <body>
         <SmoothScroll />
         {children}
+        <Visitor />
+        <Analytics />
       </body>
     </html>
   );

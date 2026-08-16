@@ -2,6 +2,7 @@
 import { useRef, useState } from "react";
 import { pc } from "@/lib/format";
 import { useFocusTrap } from "@/components/useFocusTrap";
+import { track } from "@/lib/analytics";
 
 /**
  * 4-step guided wizard shown the first time a company is opened.
@@ -136,14 +137,15 @@ export default function Wizard({ state, setAsm, onDone, suggested }) {
             onClick={() => {
               cur.apply();
               if (step < steps.length - 1) setStep(step + 1);
-              else onDone();
+              else { track("wizard_completed", { symbol: state.hist.symbol }); onDone(); }
             }}
           >
             {step === 0 ? "Let's go →" : step < steps.length - 1 ? "Next" : "Build my model →"}
           </button>
         </div>
         <div className="row">
-          <button className="btn ghost" style={{ borderColor: "transparent" }} onClick={onDone}>
+          <button className="btn ghost" style={{ borderColor: "transparent" }}
+            onClick={() => { track("wizard_skipped", { atStep: step, symbol: state.hist.symbol }); onDone(); }}>
             Skip — use all suggested values
           </button>
         </div>

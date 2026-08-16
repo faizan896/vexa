@@ -14,6 +14,7 @@ import Wizard from "@/components/Wizard";
 import Walkthrough from "@/components/Walkthrough";
 import Icon from "@/components/Icon";
 import { exportModelXlsx } from "@/lib/exportXlsx";
+import { track } from "@/lib/analytics";
 import { Overview, ThreeStatement, DcfPanel, ScenariosPanel, SensitivityPanel, CapPanel, MaPanel, LboPanel } from "@/components/Panels";
 
 // Simple mode shows just the valuation story; Advanced reveals the full suite.
@@ -71,6 +72,7 @@ export default function ModelClient() {
   const [baseline, setBaseline] = useState(null);
   const [heroGone, setHeroGone] = useState(false);
   const xlBusyRef = useRef(false);
+  const editedRef = useRef(false);
 
   // mobile: once the hero scrolls away, keep the headline value pinned to the top
   useEffect(() => {
@@ -88,6 +90,7 @@ export default function ModelClient() {
   }, []);
   const setMode = (adv) => {
     setAdvanced(adv);
+    track("mode_switched", { to: adv ? "advanced" : "simple" });
     try { localStorage.setItem("vexa_mode", adv ? "advanced" : "simple"); } catch {}
     if (!adv && !SIMPLE_TABS.includes(tab)) setTab("Overview");
   };
@@ -96,6 +99,7 @@ export default function ModelClient() {
   const exportXl = async () => {
     if (!state || !R || xlBusyRef.current) return;
     xlBusyRef.current = true; setXlBusy(true);
+    track("export_excel", { symbol: sym });
     try { await exportModelXlsx(state, R, cur, ["Base", "Bull", "Bear"][scen]); } catch {}
     xlBusyRef.current = false; setXlBusy(false);
   };
@@ -103,6 +107,7 @@ export default function ModelClient() {
   const share = async () => {
     if (!state) return;
     const url = `${window.location.origin}/model/${encodeURIComponent(sym)}#v=${encodeURIComponent(encodeShare(state.asm, scen))}`;
+    track("share_link", { symbol: sym });
     try { await navigator.clipboard.writeText(url); } catch {}
     setCopied(true); setTimeout(() => setCopied(false), 2200);
   };
@@ -133,6 +138,7 @@ export default function ModelClient() {
           } catch { setWizard(true); }
         }
         setState(st);
+        track("model_opened", { symbol: sym, source: shared ? "shared_link" : "direct" });
       } catch {
         if (!dead) setError("Network problem — try again.");
       }
@@ -339,7 +345,7 @@ export default function ModelClient() {
             </div>
             {!notMeaningful && (
               <button className={"prov-audit" + (audit ? " on" : "")} aria-pressed={audit}
-                onClick={() => { setAudit((a) => !a); setTraceKey(0); }}>
+                onClick={() => { if (!audit) track("audit_opened", { symbol: sym }); setAudit((a) => !a); setTraceKey(0); }}>
                 <Icon name={audit ? "check" : "audit"} size={13} />
                 {audit ? " Audit mode — click a KPI to trace it" : " Trace the math"}
               </button>
@@ -384,7 +390,7 @@ export default function ModelClient() {
             <div className="tabbar-actions">
               <button className="act" disabled={notMeaningful}
                 title={notMeaningful ? "Best on a profitable operating company — open Apple to try it" : "Learn how the three statements connect"}
-                onClick={() => setWalk(true)}><Icon name="play" size={13} /> Walkthrough</button>
+                onClick={() => { track("walkthrough_opened", { symbol: sym }); setWalk(true); }}><Icon name="play" size={13} /> Walkthrough</button>
               <button className="act" onClick={exportXl}><Icon name="download" size={13} /> {xlBusy ? "…" : "Excel"}</button>
               <button className="act" onClick={share}><Icon name={copied ? "check" : "share"} size={13} /> {copied ? "Copied" : "Share"}</button>
               <button className="act" onClick={() => setWizard(true)}><Icon name="refresh" size={13} /> Wizard</button>
@@ -427,7 +433,12 @@ export default function ModelClient() {
             <ModelControls
               state={state} scen={scen} setScen={setScen} learnOn={learnOn} setLearnOn={setLearnOn}
               advanced={advanced}
-              setAsm={(asm) => setState({ ...state, asm })}
+              setAsm={(asm) => {
+                // the single most important engagement signal: did they actually
+                // change an assumption, or just look? fire once per model.
+                if (!editedRef.current) { editedRef.current = true; track("assumption_edited", { symbol: sym }); }
+                setState({ ...state, asm });
+              }}
             />
           </div>
           <div className="footer">

@@ -71,6 +71,7 @@ export default function ModelClient() {
   const [advanced, setAdvanced] = useState(false);
   const [baseline, setBaseline] = useState(null);
   const [heroGone, setHeroGone] = useState(false);
+  const [toast, setToast] = useState(null);
   const xlBusyRef = useRef(false);
   const editedRef = useRef(false);
 
@@ -100,7 +101,11 @@ export default function ModelClient() {
     if (!state || !R || xlBusyRef.current) return;
     xlBusyRef.current = true; setXlBusy(true);
     track("export_excel", { symbol: sym });
-    try { await exportModelXlsx(state, R, cur, ["Base", "Bull", "Bear"][scen]); } catch {}
+    try {
+      await exportModelXlsx(state, R, cur, ["Base", "Bull", "Bear"][scen]);
+      setToast("Downloaded a live Excel model — edit the blue cells and it recalculates.");
+      setTimeout(() => setToast(null), 5200);
+    } catch {}
     xlBusyRef.current = false; setXlBusy(false);
   };
 
@@ -277,6 +282,7 @@ export default function ModelClient() {
   return (
     <Shell>
       <h1 className="sr-only">{h.name} ({h.symbol}) — Vexa valuation</h1>
+      {toast && <div className="toast" role="status">{toast}</div>}
       {/* mobile-only pinned summary: keeps the answer visible while scrolling the tabs,
           and gives a one-tap route to the assumptions (which sit below the content on phones) */}
       <div className={"kpi-sticky" + (heroGone ? " show" : "")} aria-hidden={!heroGone}>
@@ -391,7 +397,9 @@ export default function ModelClient() {
               <button className="act" disabled={notMeaningful}
                 title={notMeaningful ? "Best on a profitable operating company — open Apple to try it" : "Learn how the three statements connect"}
                 onClick={() => { track("walkthrough_opened", { symbol: sym }); setWalk(true); }}><Icon name="play" size={13} /> Walkthrough</button>
-              <button className="act" onClick={exportXl}><Icon name="download" size={13} /> {xlBusy ? "…" : "Excel"}</button>
+              <button className="act" onClick={exportXl}
+                title="Download a live Excel model — edit any assumption and the whole workbook recalculates">
+                <Icon name="download" size={13} /> {xlBusy ? "…" : "Excel"}</button>
               <button className="act" onClick={share}><Icon name={copied ? "check" : "share"} size={13} /> {copied ? "Copied" : "Share"}</button>
               <button className="act" onClick={() => setWizard(true)}><Icon name="refresh" size={13} /> Wizard</button>
             </div>

@@ -5,3 +5,10 @@ out/
 .env*.local
 .DS_Store
 *.log
+
+# local scratch / media
+*.mov
+vexa-demo-*.mp4
+f[0-9]*.jpg
+contact.jpg
+prev*.jpg

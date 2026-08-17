@@ -664,6 +664,23 @@ abbr.nm { text-decoration: none; border-bottom: 1px dotted currentColor; cursor:
   .term-pop { width: auto; max-width: min(260px, calc(100vw - 36px)); }
 }
 
+/* ===== funded-growth consistency check ===== */
+.funded { margin-top: 14px; border: 1px solid var(--line); border-left: 3px solid var(--tan); border-radius: 10px; background: var(--paper); padding: 13px 14px 11px; }
+html[data-theme="dark"] .funded { background: #201913; }
+.funded.ok { border-left-color: var(--good); }
+.funded.warn { border-left-color: var(--gold); }
+.funded.bad { border-left-color: var(--bad); }
+.funded > .smallcaps { display: block; margin-bottom: 10px; }
+.funded-eq { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 8px 10px; margin-bottom: 10px; }
+.funded-eq > span { display: flex; flex-direction: column; }
+.funded-eq b { font-family: var(--serif); font-size: 19px; font-weight: var(--display-weight); letter-spacing: var(--display-tracking); font-variant-numeric: tabular-nums lining-nums; }
+.funded-eq i { font-style: normal; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-top: 1px; }
+.funded-eq .eq { font-size: 15px; color: var(--grey); align-self: center; padding-bottom: 12px; }
+.funded-note { font-size: 13px; line-height: 1.55; margin-bottom: 6px; }
+.funded.warn .funded-note { color: var(--accent); }
+.funded.bad .funded-note { color: var(--bad); font-weight: 600; }
+.funded-sub { font-size: 11.5px; color: var(--grey); line-height: 1.5; border-top: 1px solid var(--line); padding-top: 8px; }
+
 /* ===== assumption consensus ===== */
 .consensus { margin-top: 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); padding: 13px 14px 11px; }
 html[data-theme="dark"] .consensus { background: #201913; }

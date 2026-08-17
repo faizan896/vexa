@@ -17,6 +17,9 @@ const GLOSSARY = {
   "Enterprise value": "The value of the whole business — equity plus debt, minus cash. What it would cost to buy the entire company outright.",
   Goodwill: "The premium a buyer pays above a target's book value — usually for brands, contracts and future potential that don't show up on the balance sheet.",
   Sensitivity: "How much the answer changes when you nudge an assumption. Shows which inputs the valuation really depends on.",
+  ROIC: "Return on Invested Capital — the profit a company earns on every pound of capital put into the business. If ROIC is above the cost of capital, growth creates value; below it, growth destroys value.",
+  "Reinvestment rate": "The share of after-tax operating profit a company puts back into the business (capex above depreciation, plus working capital). Growth has to be funded out of this.",
+  "Funded growth": "Reinvestment rate x ROIC — the growth a company's own capital allocation can actually sustain. Assuming growth far above it means assuming a change in how the business is run.",
 };
 
 export default function Term({ term, children }) {

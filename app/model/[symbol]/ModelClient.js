@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { deriveState } from "@/lib/engine";
+import { deriveState, fundamentals } from "@/lib/engine";
 import { useRunAll } from "@/lib/useRunAll";
 import { big, pc, px, curSym } from "@/lib/format";
 import ModelControls from "@/components/ModelControls";
@@ -14,6 +14,7 @@ import Wizard from "@/components/Wizard";
 import Walkthrough from "@/components/Walkthrough";
 import Icon from "@/components/Icon";
 import Consensus from "@/components/Consensus";
+import FundedGrowth from "@/components/FundedGrowth";
 import { exportModelXlsx } from "@/lib/exportXlsx";
 import { track } from "@/lib/analytics";
 import { Overview, ThreeStatement, DcfPanel, ScenariosPanel, SensitivityPanel, CapPanel, MaPanel, LboPanel } from "@/components/Panels";
@@ -450,6 +451,7 @@ export default function ModelClient() {
                 setState({ ...state, asm });
               }}
             />
+            <FundedGrowth F={fundamentals(state, state.asm.growth[scen])} cur={cur} />
             <Consensus symbol={sym} asm={state.asm} edited={edited} />
           </div>
           <div className="footer">

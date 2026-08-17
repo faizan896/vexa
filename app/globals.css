@@ -664,6 +664,22 @@ abbr.nm { text-decoration: none; border-bottom: 1px dotted currentColor; cursor:
   .term-pop { width: auto; max-width: min(260px, calc(100vw - 36px)); }
 }
 
+/* ===== assumption consensus ===== */
+.consensus { margin-top: 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); padding: 13px 14px 11px; }
+html[data-theme="dark"] .consensus { background: #201913; }
+.consensus > .smallcaps { display: block; margin-bottom: 10px; }
+.cons-row { margin-bottom: 13px; }
+.cons-row:last-of-type { margin-bottom: 6px; }
+.cons-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 12px; margin-bottom: 5px; }
+.cons-med { color: var(--grey); font-family: var(--mono); font-size: 11px; }
+.cons-track { position: relative; height: 8px; background: var(--band-alt); border-radius: 999px; }
+.cons-iqr { position: absolute; top: 0; height: 8px; background: var(--tan); opacity: 0.45; border-radius: 999px; }
+.cons-medmark { position: absolute; top: -2px; width: 2px; height: 12px; background: var(--grey); border-radius: 2px; }
+.cons-you { position: absolute; top: -3px; width: 3px; height: 14px; background: var(--accent); border-radius: 2px; box-shadow: 0 0 0 2px var(--paper); }
+html[data-theme="dark"] .cons-you { box-shadow: 0 0 0 2px #201913; }
+.cons-note { font-size: 11.5px; color: var(--grey); margin-top: 5px; }
+.cons-foot { font-size: 10.5px; color: var(--grey); font-style: italic; border-top: 1px solid var(--line); padding-top: 8px; margin-top: 4px; }
+
 /* ===== toast ===== */
 .toast {
   position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%); z-index: 90;

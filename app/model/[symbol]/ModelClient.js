@@ -13,6 +13,7 @@ import Term from "@/components/Term";
 import Wizard from "@/components/Wizard";
 import Walkthrough from "@/components/Walkthrough";
 import Icon from "@/components/Icon";
+import Consensus from "@/components/Consensus";
 import { exportModelXlsx } from "@/lib/exportXlsx";
 import { track } from "@/lib/analytics";
 import { Overview, ThreeStatement, DcfPanel, ScenariosPanel, SensitivityPanel, CapPanel, MaPanel, LboPanel } from "@/components/Panels";
@@ -72,6 +73,7 @@ export default function ModelClient() {
   const [baseline, setBaseline] = useState(null);
   const [heroGone, setHeroGone] = useState(false);
   const [toast, setToast] = useState(null);
+  const [edited, setEdited] = useState(false);
   const xlBusyRef = useRef(false);
   const editedRef = useRef(false);
 
@@ -444,10 +446,11 @@ export default function ModelClient() {
               setAsm={(asm) => {
                 // the single most important engagement signal: did they actually
                 // change an assumption, or just look? fire once per model.
-                if (!editedRef.current) { editedRef.current = true; track("assumption_edited", { symbol: sym }); }
+                if (!editedRef.current) { editedRef.current = true; setEdited(true); track("assumption_edited", { symbol: sym }); }
                 setState({ ...state, asm });
               }}
             />
+            <Consensus symbol={sym} asm={state.asm} edited={edited} />
           </div>
           <div className="footer">
             {h.name} ({h.symbol}) · figures in {h.currency} millions · data: Financial Modeling Prep · educational tool, not investment advice

@@ -11,7 +11,7 @@ const LAST_GOOD = new Map();
 export async function GET(req, { params }) {
   if (!(await checkRateLimit(`company:${clientIp(req)}`, { limit: 30, windowMs: 10_000 })).ok)
     return NextResponse.json({ error: "Too many requests — slow down a moment." }, { status: 429 });
-  const symbol = decodeURIComponent(params.symbol || "").toUpperCase().trim();
+  const symbol = (params.symbol || "").toUpperCase().trim();
   if (!VALID_SYMBOL.test(symbol))
     return NextResponse.json({ error: "That doesn't look like a valid ticker." }, { status: 400 });
   const key = process.env.FMP_API_KEY;

@@ -8,8 +8,9 @@ const isUS = (r) => {
   const e = (r.exchange || r.exchangeShortName || r.exchangeFullName || "").toUpperCase();
   return US.has(e) || /NASDAQ|NEW YORK STOCK|NYSE|AMERICAN STOCK/.test(e);
 };
-// drop leveraged/inverse ETFs & obvious non-operating tickers by name
-const junk = (r) => /(\d[xX]|leveraged|inverse|bull |bear |etf|etn)/i.test(r.name || "");
+// drop leveraged/inverse ETFs & obvious non-operating tickers by name. Whole words only:
+// "etf" is inside "Netflix" and "0x" inside "10x Genomics".
+const junk = (r) => /(\b\d(\.\d+)?x\b|leveraged|inverse|bull |bear |\betfs?\b|\betns?\b)/i.test(r.name || "");
 // preferred-share series (e.g. JPM-PC, BAC-PL) clutter results — keep class shares like BRK-B
 const pref = (r) => /-P[A-Z]?$/.test(r.symbol || "");
 

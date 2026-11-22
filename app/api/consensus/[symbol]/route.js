@@ -39,7 +39,7 @@ async function readAll(symbol) {
 }
 
 export async function GET(req, { params }) {
-  const symbol = decodeURIComponent(params.symbol || "").toUpperCase().trim();
+  const symbol = (params.symbol || "").toUpperCase().trim();
   if (!VALID_SYMBOL.test(symbol)) return NextResponse.json({ n: 0 });
   try {
     const rows = await readAll(symbol);
@@ -57,7 +57,7 @@ export async function GET(req, { params }) {
 }
 
 export async function POST(req, { params }) {
-  const symbol = decodeURIComponent(params.symbol || "").toUpperCase().trim();
+  const symbol = (params.symbol || "").toUpperCase().trim();
   if (!VALID_SYMBOL.test(symbol)) return NextResponse.json({ ok: false }, { status: 400 });
   if (!(await checkRateLimit(`cons:${clientIp(req)}`, { limit: 10, windowMs: 60_000 })).ok)
     return NextResponse.json({ ok: false }, { status: 429 });

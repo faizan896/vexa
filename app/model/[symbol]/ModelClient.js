@@ -105,7 +105,7 @@ export default function ModelClient() {
     xlBusyRef.current = true; setXlBusy(true);
     track("export_excel", { symbol: sym });
     try {
-      await exportModelXlsx(state, R, cur, ["Base", "Bull", "Bear"][scen]);
+      await exportModelXlsx(state, R, cur, ["Base", "Bull", "Bear"][scen], scen);
       setToast("Downloaded a live Excel model — edit the blue cells and it recalculates.");
       setTimeout(() => setToast(null), 5200);
     } catch {}
